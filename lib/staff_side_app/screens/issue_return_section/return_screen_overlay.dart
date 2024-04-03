@@ -2,10 +2,10 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:intl/intl.dart';
-import 'package:sports_complex_ms/models/issue_return_section/issued_equipments.dart';
-import 'package:sports_complex_ms/models/student.dart';
-import 'package:sports_complex_ms/providers/issued_items_provider.dart';
-import 'package:sports_complex_ms/services/get_free_equipments.dart';
+import 'package:sports_complex_ms/staff_side_app/models/issue_return_section/issued_equipments.dart';
+import 'package:sports_complex_ms/staff_side_app/models/student.dart';
+import 'package:sports_complex_ms/staff_side_app/providers/issued_items_provider.dart';
+import 'package:sports_complex_ms/staff_side_app/services/get_free_equipments.dart';
 
 class ReturnScreenOverlay extends ConsumerStatefulWidget {
   const ReturnScreenOverlay({

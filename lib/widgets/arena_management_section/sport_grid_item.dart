@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:sports_complex_ms/screens/arena_management_section/sport_arena.dart';
+import 'package:sports_complex_ms/staff_side_app/screens/arena_management_section/sport_arena.dart';
 
 class SportGridItem extends StatelessWidget {
   const SportGridItem({super.key, required this.sport});

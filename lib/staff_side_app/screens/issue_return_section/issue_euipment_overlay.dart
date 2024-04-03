@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 //import 'package:sports_complex_ms/data/dummy_data.dart';
 //import 'package:sports_complex_ms/models/issue_return_section/equipment.dart';
-import 'package:sports_complex_ms/services/get_free_equipments.dart';
+import 'package:sports_complex_ms/staff_side_app/services/get_free_equipments.dart';
 
 class IssueAnEquipment extends StatefulWidget {
   const IssueAnEquipment({

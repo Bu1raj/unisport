@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:sports_complex_ms/services/arena_management_query.dart';
+import 'package:sports_complex_ms/staff_side_app/services/arena_management_query.dart';
 import 'package:sports_complex_ms/student_side_app/global_constants/global_constants.dart';
 
 class SlotsDetailsItem extends StatefulWidget {

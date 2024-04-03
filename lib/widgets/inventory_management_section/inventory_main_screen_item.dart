@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 //import 'package:sports_complex_ms/providers/inventory_management_section/main_inventory_provider.dart';
-import 'package:sports_complex_ms/screens/inventory_management_section/management_screen.dart';
+import 'package:sports_complex_ms/staff_side_app/screens/inventory_management_section/management_screen.dart';
 
 class InventoryMainScreenItem extends ConsumerWidget {
   const InventoryMainScreenItem({

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:sports_complex_ms/models/arena_management_section/slots_details.dart';
+import 'package:sports_complex_ms/staff_side_app/models/arena_management_section/slots_details.dart';
 
 class Arena {
   Arena({

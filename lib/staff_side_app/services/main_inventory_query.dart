@@ -5,7 +5,7 @@ import 'package:http/http.dart' as http;
 import 'package:intl/intl.dart';
 import 'package:sports_complex_ms/constants/error_handle.dart';
 import 'package:sports_complex_ms/constants/global_constants.dart';
-import 'package:sports_complex_ms/models/issue_return_section/equipment.dart';
+import 'package:sports_complex_ms/staff_side_app/models/issue_return_section/equipment.dart';
 
 class MainInventoryQueries {
   Future<List<MainInventoryEquipment>> fetchList(

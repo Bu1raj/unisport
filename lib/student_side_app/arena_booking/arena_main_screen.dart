@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:sports_complex_ms/services/arena_management_query.dart';
+import 'package:sports_complex_ms/staff_side_app/services/arena_management_query.dart';
 import 'package:sports_complex_ms/student_side_app/arena_booking/widgets/sport_grid_item.dart';
 
 class ArenaMainScreen extends StatefulWidget {

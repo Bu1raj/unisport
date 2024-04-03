@@ -1,10 +1,10 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:sports_complex_ms/models/arena_management_section/arena.dart';
-import 'package:sports_complex_ms/models/arena_management_section/slots_details.dart';
-import 'package:sports_complex_ms/models/issue_return_section/equipment.dart';
-import 'package:sports_complex_ms/models/issue_return_section/issued_equipments.dart';
-import 'package:sports_complex_ms/models/student.dart';
+import 'package:sports_complex_ms/staff_side_app/models/arena_management_section/arena.dart';
+import 'package:sports_complex_ms/staff_side_app/models/arena_management_section/slots_details.dart';
+import 'package:sports_complex_ms/staff_side_app/models/issue_return_section/equipment.dart';
+import 'package:sports_complex_ms/staff_side_app/models/issue_return_section/issued_equipments.dart';
+import 'package:sports_complex_ms/staff_side_app/models/student.dart';
 
 final mainSportsCatalog = {
   'Cricket': Icons.sports_cricket_rounded,

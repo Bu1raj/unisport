@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 //import 'package:sports_complex_ms/models/arena_management_section/arena.dart';
-import 'package:sports_complex_ms/services/arena_management_query.dart';
+import 'package:sports_complex_ms/staff_side_app/services/arena_management_query.dart';
 import 'package:sports_complex_ms/widgets/arena_management_section/arena_item.dart';
 
 class SportArena extends StatefulWidget {

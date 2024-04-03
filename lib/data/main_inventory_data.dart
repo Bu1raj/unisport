@@ -1,4 +1,4 @@
-import 'package:sports_complex_ms/models/issue_return_section/equipment.dart';
+import 'package:sports_complex_ms/staff_side_app/models/issue_return_section/equipment.dart';
 
 final mainInventory = [
   //cricket

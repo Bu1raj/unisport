@@ -1,6 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:sports_complex_ms/models/student.dart';
+import 'package:sports_complex_ms/staff_side_app/models/student.dart';
 
 class SlotsDetailsItem extends StatefulWidget {
   const SlotsDetailsItem({

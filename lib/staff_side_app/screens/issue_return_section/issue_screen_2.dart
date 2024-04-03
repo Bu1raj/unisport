@@ -1,11 +1,11 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:sports_complex_ms/models/issue_return_section/issued_equipments.dart';
-import 'package:sports_complex_ms/providers/issued_items_provider.dart';
-import 'package:sports_complex_ms/providers/sport_eqipments_map_provider.dart';
-import 'package:sports_complex_ms/screens/issue_return_section/issue_euipment_overlay.dart';
-import 'package:sports_complex_ms/services/get_free_equipments.dart';
+import 'package:sports_complex_ms/staff_side_app/models/issue_return_section/issued_equipments.dart';
+import 'package:sports_complex_ms/staff_side_app/providers/issued_items_provider.dart';
+import 'package:sports_complex_ms/staff_side_app/providers/sport_eqipments_map_provider.dart';
+import 'package:sports_complex_ms/staff_side_app/screens/issue_return_section/issue_euipment_overlay.dart';
+import 'package:sports_complex_ms/staff_side_app/services/get_free_equipments.dart';
 
 final _firestore = FirebaseFirestore.instance;
 

@@ -1,10 +1,10 @@
 import 'package:another_flushbar/flushbar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:sports_complex_ms/models/issue_return_section/equipment.dart';
-import 'package:sports_complex_ms/providers/inventory_management_section/filtered_list_provider.dart';
-import 'package:sports_complex_ms/providers/inventory_management_section/main_inventory_provider.dart';
-import 'package:sports_complex_ms/providers/inventory_management_section/search_list_provider.dart';
+import 'package:sports_complex_ms/staff_side_app/models/issue_return_section/equipment.dart';
+import 'package:sports_complex_ms/staff_side_app/providers/inventory_management_section/filtered_list_provider.dart';
+import 'package:sports_complex_ms/staff_side_app/providers/inventory_management_section/main_inventory_provider.dart';
+import 'package:sports_complex_ms/staff_side_app/providers/inventory_management_section/search_list_provider.dart';
 
 class ManagementScreen extends ConsumerStatefulWidget {
   const ManagementScreen({

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:sports_complex_ms/providers/issued_items_provider.dart';
-import 'package:sports_complex_ms/screens/issue_return_section/issue_screen_2.dart';
+import 'package:sports_complex_ms/staff_side_app/providers/issued_items_provider.dart';
+import 'package:sports_complex_ms/staff_side_app/screens/issue_return_section/issue_screen_2.dart';
 import 'package:sports_complex_ms/widgets/issue_return_section/issued_equipment_card.dart';
 
 class IssueScreen extends ConsumerStatefulWidget {

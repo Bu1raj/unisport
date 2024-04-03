@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:sports_complex_ms/models/student.dart';
+import 'package:sports_complex_ms/staff_side_app/models/student.dart';
 
 enum Slots {
   slot1,

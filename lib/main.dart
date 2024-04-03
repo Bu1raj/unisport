@@ -4,9 +4,9 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:sports_complex_ms/screens/auth.dart';
-import 'package:sports_complex_ms/screens/splash_screen.dart';
-import 'package:sports_complex_ms/screens/tabs_screen.dart';
+import 'package:sports_complex_ms/staff_side_app/screens/auth.dart';
+import 'package:sports_complex_ms/staff_side_app/screens/splash_screen.dart';
+import 'package:sports_complex_ms/staff_side_app/screens/tabs_screen.dart';
 import 'package:sports_complex_ms/student_side_app/student_main_screen.dart';
 
 import 'firebase_options.dart';

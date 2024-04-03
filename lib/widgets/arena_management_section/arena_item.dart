@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:sports_complex_ms/screens/arena_management_section/slot_details.dart';
+import 'package:sports_complex_ms/staff_side_app/screens/arena_management_section/slot_details.dart';
 
 class ArenaItem extends StatelessWidget {
   const ArenaItem({

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:sports_complex_ms/screens/arena_management_section/arena_main_screen.dart';
-import 'package:sports_complex_ms/screens/inventory_management_section/inventory_main_screen.dart';
-import 'package:sports_complex_ms/screens/issue_return_section/issue_screen.dart';
+import 'package:sports_complex_ms/staff_side_app/screens/arena_management_section/arena_main_screen.dart';
+import 'package:sports_complex_ms/staff_side_app/screens/inventory_management_section/inventory_main_screen.dart';
+import 'package:sports_complex_ms/staff_side_app/screens/issue_return_section/issue_screen.dart';
 //import 'package:sports_complex_ms/screens/tournament_section/tournament_main_screen.dart';
 import 'package:sports_complex_ms/widgets/main_drawer.dart';
 

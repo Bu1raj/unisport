@@ -1,5 +1,5 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:sports_complex_ms/services/map_service.dart';
+import 'package:sports_complex_ms/staff_side_app/services/map_service.dart';
 
 class MapNotifier extends StateNotifier<Map<String, List<String>>> {
   MapNotifier() : super({});

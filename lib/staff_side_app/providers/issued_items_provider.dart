@@ -3,7 +3,7 @@ import 'dart:async';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:sports_complex_ms/models/issue_return_section/issued_equipments.dart';
+import 'package:sports_complex_ms/staff_side_app/models/issue_return_section/issued_equipments.dart';
 //import 'package:sports_complex_ms/services/map_service.dart';
 
 final _firestore = FirebaseFirestore.instance;

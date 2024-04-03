@@ -1,6 +1,6 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:sports_complex_ms/models/issue_return_section/equipment.dart';
-import 'package:sports_complex_ms/providers/inventory_management_section/main_inventory_provider.dart';
+import 'package:sports_complex_ms/staff_side_app/models/issue_return_section/equipment.dart';
+import 'package:sports_complex_ms/staff_side_app/providers/inventory_management_section/main_inventory_provider.dart';
 
 final filterProvider = StateProvider<String>((ref) => 'all');
 
