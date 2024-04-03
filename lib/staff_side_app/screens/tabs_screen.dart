@@ -3,7 +3,7 @@ import 'package:sports_complex_ms/staff_side_app/screens/arena_management_sectio
 import 'package:sports_complex_ms/staff_side_app/screens/inventory_management_section/inventory_main_screen.dart';
 import 'package:sports_complex_ms/staff_side_app/screens/issue_return_section/issue_screen.dart';
 //import 'package:sports_complex_ms/screens/tournament_section/tournament_main_screen.dart';
-import 'package:sports_complex_ms/widgets/main_drawer.dart';
+import 'package:sports_complex_ms/staff_side_app/widgets/main_drawer.dart';
 
 class TabScreen extends StatefulWidget {
   const TabScreen({super.key});

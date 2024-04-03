@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:sports_complex_ms/widgets/arena_management_section/slots_details_items.dart';
+import 'package:sports_complex_ms/staff_side_app/widgets/arena_management_section/slots_details_items.dart';
 
 class SlotsDetailsScreen extends StatefulWidget {
   const SlotsDetailsScreen({
