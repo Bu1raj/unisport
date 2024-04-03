@@ -2,8 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:sports_complex_ms/staff_side_app/models/student.dart';
-//import 'package:sports_complex_ms/student_side_app/arena_booking/arena_main_screen.dart';
-import 'package:sports_complex_ms/student_side_app/global_constants/global_constants.dart';
+//import 'package:sports_complex_ms/student_side_app/global_constants/global_constants.dart';
 import 'package:sports_complex_ms/student_side_app/widgets/student_main_drawer.dart';
 
 class StudentMainScreen extends StatefulWidget {
@@ -20,9 +19,8 @@ class _StudentMainScreenState extends State<StudentMainScreen> {
 
   Future<void> loadStudentDetails() async {
     final snapshot = await FirebaseFirestore.instance.collection('users').get();
-
     final s = snapshot.docs.firstWhere((doc) => doc.id == widget.userId);
-    studentUsn = s.data()['usn'];
+    //studentUsn = s.data()['usn'];
     studentDetails = Student(
         usn: s.data()['usn'],
         phNo: s.data()['contactNumber'],
