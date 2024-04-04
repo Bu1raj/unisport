@@ -128,7 +128,7 @@ app.get("/arenaManagement/getSlotDetails/:arenaId", async(req, res) => {
     }
 })
 
-app.post("/arenaManagement/getSlotDetails/bookASlot", async(req, res) => {
+app.post("/arenaManagement/bookASlot", async(req, res) => {
     try{
         const {slotNo, arenaId, bookedBy} = req.body
         const result = await db.bookASlot(slotNo, arenaId, bookedBy)
@@ -137,6 +137,26 @@ app.post("/arenaManagement/getSlotDetails/bookASlot", async(req, res) => {
         res.status(500).json({error : e.message});
     }
 })
+
+app.get("/arenaManagement/getBookedSlotDetails/:usn", async(req, res) => {
+    try{
+        const {usn} = req.params
+        const result = await db.bookedSlotDetails(usn)
+        res.status(200).send(result)
+    }catch(e){
+        res.status(500).json({error : e.message});
+    }
+});
+
+app.post("/arenaManagement/cancelBooking", async(req, res) => {
+    try{
+        const {bookedBy} = req.body
+        const result = await db.cancelBooking(bookedBy)
+        res.status(200).send({msg: 'Booking cancelled'})
+    }catch(e){
+        res.status(500).json({error : e.message});
+    }
+});
 
 app.listen(PORT, "0.0.0.0", () => {
     console.log(`connected at port ${PORT}`);

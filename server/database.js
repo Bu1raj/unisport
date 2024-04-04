@@ -156,5 +156,26 @@ export async function bookASlot(slotNo, arenaId, bookedBy){
     )
 }
 
+export async function bookedSlotDetails(usn){
+    const result = await pool.query(
+        `SELECT
+        *
+        FROM arena_slots
+        WHERE
+        bookedBy = ?`, [usn]
+    )
+    return result[0]
+}
+
+export async function cancelBooking(usn){
+    const result = await pool.query(
+        `UPDATE
+        arena_slots
+        SET bookedBy = NULL
+        WHERE
+        bookedBy = ?`, [usn]
+    )
+}
+
 /*const eqpList = await getArenaSports();
 console.log(eqpList);*/

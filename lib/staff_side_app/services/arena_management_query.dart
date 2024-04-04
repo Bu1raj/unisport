@@ -1,6 +1,4 @@
 import 'dart:convert';
-
-import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:sports_complex_ms/constants/error_handle.dart';
 import 'package:sports_complex_ms/constants/global_constants.dart';
@@ -94,32 +92,5 @@ class ArenaManagementQuery {
       print(e.toString());
     }
     return slotDetails;
-  }
-
-  Future<void> bookASlot(
-      String slotNo, String arenaId, String usn, BuildContext context) async {
-    try {
-      http.Response res = await http.post(
-        Uri.parse('$uri/arenaManagement/bookASlot'),
-        body:
-            jsonEncode({"slotNo": slotNo, "arenaId": arenaId, "bookedBy": usn}),
-        headers: <String, String>{
-          'Content-Type': 'application/json; charset=UTF-8'
-        },
-      );
-
-      httpErrorHandle(
-          response: res,
-          onSuccess: () {
-            ScaffoldMessenger.of(context).showSnackBar(
-              SnackBar(
-                content: Text(
-                    'Slot-${slotNo.substring(slotNo.length - 1)} booked successfully'),
-              ),
-            );
-          });
-    } catch (e) {
-      print(e.toString());
-    }
   }
 }

@@ -7,7 +7,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:sports_complex_ms/staff_side_app/screens/auth.dart';
 import 'package:sports_complex_ms/staff_side_app/screens/splash_screen.dart';
 import 'package:sports_complex_ms/staff_side_app/screens/tabs_screen.dart';
-import 'package:sports_complex_ms/student_side_app/student_main_screen.dart';
+import 'package:sports_complex_ms/student_side_app/screens/student_main_screen.dart';
 
 import 'firebase_options.dart';
 

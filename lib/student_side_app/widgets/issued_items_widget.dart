@@ -30,6 +30,11 @@ class _IssuedItemsWidgetState extends State<IssuedItemsWidget> {
     return dateTimeFormatter.format(time);
   }
 
+  bool _isDeadlineCrossed(DateTime deadline) {
+    final now = DateTime.now();
+    return now.isAfter(deadline);
+  }
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -48,7 +53,12 @@ class _IssuedItemsWidgetState extends State<IssuedItemsWidget> {
                   fontWeight: FontWeight.w500,
                 ),
           ),
-          const SizedBox(height: 10),
+          const Divider(
+            color: Colors.black38,
+            height: 30,
+            endIndent: 7,
+            thickness: 0.5,
+          ),
           StreamBuilder(
             stream: FirebaseFirestore.instance
                 .collection('issuedEquipments')
@@ -68,125 +78,191 @@ class _IssuedItemsWidgetState extends State<IssuedItemsWidget> {
                         const Duration(hours: 5),
                       );
                   final eqpIds = List<String>.from(details['equipmentIds']);
-                  return Row(
-                    crossAxisAlignment: CrossAxisAlignment.start,
+                  return Column(
                     children: [
-                      CustomContainerOne(
-                        width: 165,
-                        height: 165,
-                        content: FutureBuilder(
-                          future: loadEquipmentNames(eqpIds),
-                          builder:
-                              (BuildContext context, AsyncSnapshot snapshot) {
-                            if (snapshot.connectionState ==
-                                ConnectionState.waiting) {
-                              return const Center(
-                                child: CircularProgressIndicator(
-                                  color: Colors.white,
-                                ),
-                              );
-                            } else if (snapshot.hasError) {
-                              return Text('Error: ${snapshot.error}');
-                            } else {
-                              return SingleChildScrollView(
-                                scrollDirection: Axis.horizontal,
-                                child: SingleChildScrollView(
-                                  scrollDirection: Axis.vertical,
-                                  child: Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    children: [
-                                      Text(
-                                        '${details['sport']}'.toUpperCase(),
-                                        style: Theme.of(context)
-                                            .textTheme
-                                            .bodyLarge!
-                                            .copyWith(
-                                              color: Colors.white,
-                                            ),
-                                      ),
-                                      const SizedBox(height: 5),
-                                      Text(
-                                        'Equipments',
-                                        style: Theme.of(context)
-                                            .textTheme
-                                            .bodyLarge!
-                                            .copyWith(
-                                              color: Colors.white,
-                                            ),
-                                      ),
-                                      const SizedBox(height: 3),
-                                      for (final e in eqpNamesIdsMap.entries)
-                                        Text('${e.value} - ${e.key}',
-                                            style: Theme.of(context)
-                                                .textTheme
-                                                .bodyMedium!
-                                                .copyWith(
-                                                  color: Colors.white,
-                                                )),
-                                    ],
-                                  ),
-                                ),
-                              );
-                            }
-                          },
-                        ),
-                      ),
-                      const Spacer(),
-                      Column(
+                      Row(
+                        crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           CustomContainerOne(
-                            content: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text(
-                                  'Issued on',
-                                  style: Theme.of(context)
-                                      .textTheme
-                                      .bodyLarge!
-                                      .copyWith(
-                                        color: Colors.white,
+                            width: 165,
+                            height: 165,
+                            content: FutureBuilder(
+                              future: loadEquipmentNames(eqpIds),
+                              builder: (BuildContext context,
+                                  AsyncSnapshot snapshot) {
+                                if (snapshot.connectionState ==
+                                    ConnectionState.waiting) {
+                                  return const Center(
+                                    child: CircularProgressIndicator(
+                                      color: Colors.white,
+                                    ),
+                                  );
+                                } else if (snapshot.hasError) {
+                                  return Text('Error: ${snapshot.error}');
+                                } else {
+                                  return SingleChildScrollView(
+                                    scrollDirection: Axis.horizontal,
+                                    child: SingleChildScrollView(
+                                      scrollDirection: Axis.vertical,
+                                      child: Column(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        children: [
+                                          Text(
+                                            '${details['sport']}'.toUpperCase(),
+                                            style: Theme.of(context)
+                                                .textTheme
+                                                .bodyLarge!
+                                                .copyWith(
+                                                  color: Colors.white,
+                                                ),
+                                          ),
+                                          const SizedBox(height: 5),
+                                          Text(
+                                            'Equipments',
+                                            style: Theme.of(context)
+                                                .textTheme
+                                                .bodyLarge!
+                                                .copyWith(
+                                                  color: Colors.white,
+                                                ),
+                                          ),
+                                          const SizedBox(height: 3),
+                                          for (final e
+                                              in eqpNamesIdsMap.entries)
+                                            Text('${e.value} - ${e.key}',
+                                                style: Theme.of(context)
+                                                    .textTheme
+                                                    .bodyMedium!
+                                                    .copyWith(
+                                                      color: Colors.white,
+                                                    )),
+                                        ],
                                       ),
-                                ),
-                                Text(
-                                  dateTimeFormatter(
-                                    details['issuedTime'].toDate(),
-                                  ),
-                                  style: Theme.of(context)
-                                      .textTheme
-                                      .bodyMedium!
-                                      .copyWith(
-                                        color: Colors.white,
-                                      ),
-                                ),
-                              ],
+                                    ),
+                                  );
+                                }
+                              },
                             ),
                           ),
-                          const SizedBox(height: 10),
-                          CustomContainerOne(
-                            content: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text(
-                                  'Deadline',
-                                  style: Theme.of(context)
-                                      .textTheme
-                                      .bodyLarge!
-                                      .copyWith(
-                                        color: Colors.white,
+                          const Spacer(),
+                          Column(
+                            children: [
+                              CustomContainerOne(
+                                content: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text(
+                                      'Issued on',
+                                      style: Theme.of(context)
+                                          .textTheme
+                                          .bodyLarge!
+                                          .copyWith(
+                                            color: Colors.white,
+                                          ),
+                                    ),
+                                    Text(
+                                      dateTimeFormatter(
+                                        details['issuedTime'].toDate(),
                                       ),
+                                      style: Theme.of(context)
+                                          .textTheme
+                                          .bodyMedium!
+                                          .copyWith(
+                                            color: Colors.white,
+                                          ),
+                                    ),
+                                  ],
                                 ),
-                                Text(
-                                  dateTimeFormatter(deadline),
-                                  style: Theme.of(context)
-                                      .textTheme
-                                      .bodyMedium!
-                                      .copyWith(
-                                        color: Colors.white,
-                                      ),
+                              ),
+                              const SizedBox(height: 10),
+                              CustomContainerOne(
+                                content: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text(
+                                      'Deadline',
+                                      style: Theme.of(context)
+                                          .textTheme
+                                          .bodyLarge!
+                                          .copyWith(
+                                            color: Colors.white,
+                                          ),
+                                    ),
+                                    Text(
+                                      dateTimeFormatter(deadline),
+                                      style: Theme.of(context)
+                                          .textTheme
+                                          .bodyMedium!
+                                          .copyWith(
+                                            color: Colors.white,
+                                          ),
+                                    ),
+                                  ],
                                 ),
-                              ],
+                              ),
+                            ],
+                          ),
+                        ],
+                      ),
+                      const Divider(
+                        color: Colors.black38,
+                        height: 30,
+                        endIndent: 7,
+                        thickness: 0.5,
+                      ),
+                      if (_isDeadlineCrossed(deadline))
+                        Row(
+                          children: [
+                            const Icon(
+                              Icons.warning,
+                              color: Colors.red,
                             ),
+                            const SizedBox(width: 10),
+                            Text(
+                              'You have crossed the deadline',
+                              style: Theme.of(context)
+                                  .textTheme
+                                  .titleMedium!
+                                  .copyWith(
+                                    color: Colors.red,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                            ),
+                          ],
+                        ),
+                      if (!_isDeadlineCrossed(deadline))
+                        Row(
+                          children: [
+                            const Icon(
+                              Icons.check_circle_outline_outlined,
+                              color: Colors.green,
+                            ),
+                            const SizedBox(width: 10),
+                            Text(
+                              'You are within deadline',
+                              style: Theme.of(context)
+                                  .textTheme
+                                  .titleMedium!
+                                  .copyWith(
+                                    color: Colors.green,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                            ),
+                          ],
+                        ),
+                      const SizedBox(height: 10),
+                      Row(
+                        children: [
+                          const Icon(
+                            Icons.info_outline,
+                            color: Colors.black,
+                            size: 17,
+                          ),
+                          const SizedBox(width: 5),
+                          Text(
+                            'Please return the equipments before the deadline',
+                            style: Theme.of(context).textTheme.bodySmall,
                           ),
                         ],
                       ),

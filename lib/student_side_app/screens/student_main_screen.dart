@@ -1,23 +1,24 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:sports_complex_ms/staff_side_app/models/student.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:sports_complex_ms/student_side_app/providers/student_details_provider.dart';
+import 'package:sports_complex_ms/student_side_app/widgets/arena_booking_widget.dart';
 import 'package:sports_complex_ms/student_side_app/widgets/issued_items_widget.dart';
 import 'package:sports_complex_ms/student_side_app/widgets/student_main_drawer.dart';
 
-class StudentMainScreen extends StatefulWidget {
+class StudentMainScreen extends ConsumerStatefulWidget {
   const StudentMainScreen({super.key, required this.userId});
 
   final String userId;
   @override
-  State<StudentMainScreen> createState() => _StudentMainScreenState();
+  ConsumerState<StudentMainScreen> createState() => _StudentMainScreenState();
 }
 
-class _StudentMainScreenState extends State<StudentMainScreen> {
-  late final Student studentDetails;
-  bool _isLoadingDetails = true;
+class _StudentMainScreenState extends ConsumerState<StudentMainScreen> {
+  //late final Student studentDetails;
+  //bool _isLoadingDetails = true;
   Map<String, String> eqpNames = {};
 
-  Future<void> loadStudentDetails() async {
+  /*Future<void> loadStudentDetails() async {
     final snapshot = await FirebaseFirestore.instance.collection('users').get();
     final s = snapshot.docs.firstWhere((doc) => doc.id == widget.userId);
     //studentUsn = s.data()['usn'];
@@ -29,17 +30,22 @@ class _StudentMainScreenState extends State<StudentMainScreen> {
     setState(() {
       _isLoadingDetails = false;
     });
-  }
+  }*/
 
   @override
   void initState() {
-    loadStudentDetails();
+    //loadStudentDetails();
+    ref
+        .read(studentDetailsProvider.notifier)
+        .fetchStudentDetails(widget.userId);
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
-    return _isLoadingDetails
+    final studentDetails = ref.watch(studentDetailsProvider);
+
+    return studentDetails == null
         ? const Scaffold(
             body: Center(
               child: CircularProgressIndicator(),
@@ -53,11 +59,17 @@ class _StudentMainScreenState extends State<StudentMainScreen> {
             drawer: StudentMainDrawer(studentDetails: studentDetails),
             body: Padding(
               padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 15),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  IssuedItemsWidget(studentDetails: studentDetails),
-                ],
+              child: SingleChildScrollView(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    IssuedItemsWidget(studentDetails: studentDetails),
+                    const SizedBox(height: 20),
+                    ArenaBookingWidget(
+                      studentUsn: studentDetails.usn,
+                    ),
+                  ],
+                ),
               ),
             ),
           );
