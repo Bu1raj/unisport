@@ -101,6 +101,7 @@ class _IssueScreenTwoState extends ConsumerState<IssueScreenTwo> {
           await ref.read(issuedEquipmentsDetailsProvider.notifier).addItem(
                 IssuedEquipments(
                   usn: _enteredUsn!,
+                  sport: _selectedSport,
                   issuedEquipmentsIds: _temporaryIds,
                   issuedTime: Timestamp.now(),
                 ),

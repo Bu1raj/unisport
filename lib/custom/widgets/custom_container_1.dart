@@ -4,14 +4,20 @@ class CustomContainerOne extends StatelessWidget {
   const CustomContainerOne({
     super.key,
     required this.content,
+    this.width,
+    this.height,  
   });
 
   final Widget content;
+  final double? width;
+  final double? height;
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: const EdgeInsets.all(10),
+      width: width,
+      height: height,
+      padding: const EdgeInsets.all(15),
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(15),
         color: Theme.of(context).colorScheme.primary,

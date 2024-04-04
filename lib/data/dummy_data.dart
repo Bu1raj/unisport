@@ -184,16 +184,19 @@ final List<IssuedEquipments> issuedEquipments = [
   IssuedEquipments(
     usn: '1RV21CS024',
     issuedEquipmentsIds: ['CKBAT02', 'CKBALL03', 'CKBAT03'],
+    sport: 'cricket',
     issuedTime: Timestamp.now(),//DateTime(2024, 1, 14, 1, 30),
   ),
   IssuedEquipments(
     usn: '1RV21CS028',
     issuedEquipmentsIds: ['VBBALL02'],
+    sport: 'volleyball',
     issuedTime: Timestamp.now(),//DateTime(2024, 1, 14, 2, 40),
   ),
   IssuedEquipments(
     usn: '1RV21CS040',
     issuedEquipmentsIds: ['VBNET03'],
+    sport: 'volleyball',
     issuedTime: Timestamp.now(),//DateTime(2024, 1, 14, 3, 00),
   ),
 ];

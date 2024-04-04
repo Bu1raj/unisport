@@ -19,6 +19,7 @@ class IssuedEquipmentsDetailsNotifier
               usn: doc.data()['usn'],
               issuedEquipmentsIds:
                   List<String>.from(doc.data()['equipmentIds']),
+              sport: doc.data()['sport'],
               issuedTime: doc.data()['issuedTime'],
             ))
         .toList();
