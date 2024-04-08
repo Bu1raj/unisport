@@ -2,13 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:sports_complex_ms/staff_side_app/screens/arena_management_section/arena_main_screen.dart';
 import 'package:sports_complex_ms/staff_side_app/screens/inventory_management_section/inventory_main_screen.dart';
 import 'package:sports_complex_ms/staff_side_app/screens/issue_return_section/issue_screen.dart';
-//import 'package:sports_complex_ms/screens/tournament_section/tournament_main_screen.dart';
+import 'package:sports_complex_ms/staff_side_app/screens/tournament_section/tournament_main_screen.dart';
 import 'package:sports_complex_ms/staff_side_app/widgets/main_drawer.dart';
 
 class TabScreen extends StatefulWidget {
   const TabScreen({super.key});
-
-  //final List<IssuedEquipments> issuedEquipmentList;
   @override
   State<TabScreen> createState() {
     return _TabScreenState();
@@ -47,16 +45,17 @@ class _TabScreenState extends State<TabScreen>
     } else if (_selectedPageIndex == 2) {
       activePage = const InventoryMainScreen();
       activePageTitle = 'Inventory Management';
-    } /*else if (_selectedPageIndex == 3) {
-      activePage = const TournamentMainScreen();
+    } else if (_selectedPageIndex == 3) {
+      activePage = TournamentMainScreen(
+        tabController: _tabController,
+      );
       activePageTitle = 'Tournament Organization';
-    }*/
+    }
 
     return Scaffold(
       appBar: AppBar(
-        bottom: _selectedPageIndex != 0
-            ? null
-            : TabBar(
+        bottom: _selectedPageIndex == 0 || _selectedPageIndex == 3
+            ? TabBar(
                 controller: _tabController,
                 labelColor: Theme.of(context).colorScheme.tertiary,
                 unselectedLabelColor: Colors.white,
@@ -68,27 +67,45 @@ class _TabScreenState extends State<TabScreen>
                     topRight: Radius.circular(10),
                   ),
                 ),
-                //overlayColor: MaterialStatePropertyAll(Colors.white),
-                tabs: const [
-                    Tab(
-                      child: Text(
-                        'Issued Items',
-                        style: TextStyle(
-                          //color: Colors.white,
-                          fontSize: 20,
+                tabs: _selectedPageIndex == 0
+                    ? const [
+                        Tab(
+                          child: Text(
+                            'Issued Items',
+                            style: TextStyle(
+                              fontSize: 20,
+                            ),
+                          ),
                         ),
-                      ),
-                    ),
-                    Tab(
-                      child: Text(
-                        'Issue',
-                        style: TextStyle(
-                          //color: Colors.white,
-                          fontSize: 20,
+                        Tab(
+                          child: Text(
+                            'Issue',
+                            style: TextStyle(
+                              fontSize: 20,
+                            ),
+                          ),
                         ),
-                      ),
-                    ),
-                  ]),
+                      ]
+                    : const [
+                        Tab(
+                          child: Text(
+                            'Tournaments',
+                            style: TextStyle(
+                              fontSize: 20,
+                            ),
+                          ),
+                        ),
+                        Tab(
+                          child: Text(
+                            'Organize',
+                            style: TextStyle(
+                              fontSize: 20,
+                            ),
+                          ),
+                        ),
+                      ],
+              )
+            : null,
         title: Text(
           activePageTitle,
           style: const TextStyle(
@@ -121,11 +138,11 @@ class _TabScreenState extends State<TabScreen>
             icon: Icon(Icons.inventory),
             label: 'Inventory',
           ),
-          /*BottomNavigationBarItem(
+          BottomNavigationBarItem(
             backgroundColor: Color.fromARGB(255, 86, 97, 114),
             icon: Icon(Icons.emoji_events),
             label: 'Tournament',
-          ),*/
+          ),
         ],
       ),
     );

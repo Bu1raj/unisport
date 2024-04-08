@@ -26,7 +26,7 @@ class IssuedEquipmentCard extends StatelessWidget {
         isScrollControlled: true,
         constraints: BoxConstraints(
           minWidth: screenWidth,
-          maxHeight: screenHeight * 0.63,
+          maxHeight: screenHeight * 0.58,
         ),
         context: context,
         builder: (ctx) => ReturnScreenOverlay(

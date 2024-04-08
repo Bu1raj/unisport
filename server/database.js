@@ -177,5 +177,15 @@ export async function cancelBooking(usn){
     )
 }
 
+//////////////////////////////////////////// tournament section //////////////////////////////////////////
+
+export async function getTournamentSports(){
+    const result = await pool.query(
+        `SELECT
+        sport FROM sports_equipments`
+    )
+    return result[0]
+}
+
 /*const eqpList = await getArenaSports();
 console.log(eqpList);*/

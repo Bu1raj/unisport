@@ -21,7 +21,7 @@ class IssuedEquipmentsDetailsNotifier
                   List<String>.from(doc.data()['equipmentIds']),
               sport: doc.data()['sport'],
               issuedTime: doc.data()['issuedTime'],
-            ))
+            ),)
         .toList();
     state = items;
   }

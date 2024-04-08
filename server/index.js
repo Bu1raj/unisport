@@ -158,6 +158,17 @@ app.post("/arenaManagement/cancelBooking", async(req, res) => {
     }
 });
 
+//////////////////////////////////////////// tournament management //////////////////////////////////////
+
+app.get("/tournamentManagement/getSports", async(req, res) => {
+    try{
+        const result = await db.getTournamentSports()
+        res.status(200).send(result)
+    }catch(e){
+        res.status(500).json({error : e.message});
+    }
+});
+
 app.listen(PORT, "0.0.0.0", () => {
     console.log(`connected at port ${PORT}`);
 });
