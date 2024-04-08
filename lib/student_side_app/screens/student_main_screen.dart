@@ -4,6 +4,7 @@ import 'package:sports_complex_ms/student_side_app/providers/student_details_pro
 import 'package:sports_complex_ms/student_side_app/widgets/arena_booking_widget.dart';
 import 'package:sports_complex_ms/student_side_app/widgets/issued_items_widget.dart';
 import 'package:sports_complex_ms/student_side_app/widgets/student_main_drawer.dart';
+import 'package:sports_complex_ms/student_side_app/widgets/tournament_list_widget.dart';
 
 class StudentMainScreen extends ConsumerStatefulWidget {
   const StudentMainScreen({super.key, required this.userId});
@@ -61,13 +62,16 @@ class _StudentMainScreenState extends ConsumerState<StudentMainScreen> {
               padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 15),
               child: SingleChildScrollView(
                 child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     IssuedItemsWidget(studentDetails: studentDetails),
                     const SizedBox(height: 20),
                     ArenaBookingWidget(
                       studentUsn: studentDetails.usn,
                     ),
+                    const SizedBox(height: 20),
+                    const AvailableTournamentsList(),
+                    const SizedBox(height: 20),
                   ],
                 ),
               ),

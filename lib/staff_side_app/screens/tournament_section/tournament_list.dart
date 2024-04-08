@@ -39,17 +39,18 @@ class _OrganizedTournamentsState extends ConsumerState<OrganizedTournaments> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text(
+            /*Text(
               'Tournament List',
               style: Theme.of(context).textTheme.titleLarge!.copyWith(
                     color: Theme.of(context).colorScheme.tertiary,
                   ),
-            ),
+            ),*/
             const SizedBox(
               height: 10,
             ),
             Expanded(
               child: ListView.builder(
+                padding: const EdgeInsets.only(bottom: 10),
                 itemCount: list.length,
                 itemBuilder: (context, index) => TournamentCard(
                   tournament: list[index],

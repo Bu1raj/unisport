@@ -48,10 +48,6 @@ class _CreateTournamentScreenState
     _selectedStartDate = tournamentStartDate;
     _selectedRegStartDate = regStartDate;
     _selectedRegEndDate = regEndDate;
-
-    print(_selectedStartDate);
-    print(_selectedRegStartDate);
-    print(_selectedRegEndDate);
   }
 
   Future<bool> validTournamentChecker(Tournament tournament) async {
