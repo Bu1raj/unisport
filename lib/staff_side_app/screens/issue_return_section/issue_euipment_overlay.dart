@@ -65,132 +65,124 @@ class _IssueAnEquipmentState extends State<IssueAnEquipment> {
     return LayoutBuilder(
       builder: ((context, constraints) {
         //final width = constraints.maxWidth;
-        return ConstrainedBox(
-          constraints: BoxConstraints(
-            maxHeight: constraints.maxHeight,
-            maxWidth: constraints.maxWidth,
-          ),
-          child: Padding(
-            padding: const EdgeInsets.all(16.0),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                DecoratedBox(
-                  decoration: BoxDecoration(
-                    color: Theme.of(context).colorScheme.primaryContainer,
-                    borderRadius: BorderRadius.circular(10),
-                    boxShadow: const [
-                      BoxShadow(color: Colors.grey),
-                    ],
-                  ),
-                  child: DropdownButton(
-                    value: _selectedEquipment,
-                    items: [
-                      for (final equipment in widget.map[widget.selectedSport]!)
-                        DropdownMenuItem(
-                          value: equipment,
-                          child: Text(
-                            equipment,
-                            style: const TextStyle(fontSize: 17),
-                          ),
-                        )
-                    ],
-                    onChanged: (value) {
-                      setState(() {
-                        _selectedEquipment = value!;
-                        _isLoading = true;
-                        _fetchValidSelectedEquipmentId(
-                            widget.selectedSport, _selectedEquipment);
-                      });
-                    },
-                    padding: const EdgeInsets.symmetric(
-                      vertical: 1,
-                      horizontal: 10,
-                    ),
-                    underline: Container(),
-                    dropdownColor:
-                        Theme.of(context).colorScheme.primaryContainer,
-                  ),
-                ),
-                const SizedBox(height: 10),
-                Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: _isLoading
-                      ? const CircularProgressIndicator()
-                      : Row(
-                          children: [
-                            const Text(
-                              'ID :  ',
-                              style: TextStyle(
-                                  fontWeight: FontWeight.bold, fontSize: 17),
-                            ),
-                            Text(
-                              _validSelectedEquipmentId == null
-                                  ? 'No equipments available'
-                                  : _validSelectedEquipmentId!,
-                              style: TextStyle(
-                                fontWeight: FontWeight.bold,
-                                fontStyle: FontStyle.italic,
-                                color: _validSelectedEquipmentId == null
-                                    ? Colors.red
-                                    : Colors.green,
-                                fontSize: 17,
-                              ),
-                            ),
-                          ],
-                        ),
-                ),
-                const SizedBox(height: 10),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.end,
-                  children: [
-                    TextButton(
-                      onPressed: () {
-                        Navigator.pop(context);
-                      },
-                      child: const Text('Cancel'),
-                    ),
-                    const SizedBox(width: 5),
-                    ElevatedButton.icon(
-                      onPressed: _isLoading
-                          ? null
-                          : () {
-                              if (_validSelectedEquipmentId == null) {
-                                showDialog(
-                                  context: context,
-                                  builder: (ctx) => AlertDialog(
-                                    title:
-                                        const Text('No Equipments available'),
-                                    content: const Text(
-                                        'Please try again later or choose a different equipment or sport'),
-                                    actions: [
-                                      TextButton(
-                                        onPressed: () {
-                                          Navigator.pop(ctx);
-                                        },
-                                        child: const Text('Okay'),
-                                      ),
-                                    ],
-                                  ),
-                                );
-                              } else {
-                                widget.addEquipment(_validSelectedEquipmentId!,
-                                    _selectedEquipment!);
-                                Navigator.pop(context);
-                              }
-                            },
-                      icon: const Icon(Icons.add),
-                      label: const Text('Add Item'),
-                      style: ElevatedButton.styleFrom(
-                        foregroundColor: Colors.white,
-                        backgroundColor: Theme.of(context).colorScheme.primary,
+        return Column(
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            DecoratedBox(
+              decoration: BoxDecoration(
+                color: Theme.of(context).colorScheme.primaryContainer,
+                borderRadius: BorderRadius.circular(10),
+                boxShadow: const [
+                  BoxShadow(color: Colors.grey),
+                ],
+              ),
+              child: DropdownButton(
+                value: _selectedEquipment,
+                items: [
+                  for (final equipment in widget.map[widget.selectedSport]!)
+                    DropdownMenuItem(
+                      value: equipment,
+                      child: Text(
+                        equipment,
+                        style: const TextStyle(fontSize: 17),
                       ),
-                    ),
-                  ],
-                )
-              ],
+                    )
+                ],
+                onChanged: (value) {
+                  setState(() {
+                    _selectedEquipment = value!;
+                    _isLoading = true;
+                    _fetchValidSelectedEquipmentId(
+                        widget.selectedSport, _selectedEquipment);
+                  });
+                },
+                padding: const EdgeInsets.symmetric(
+                  vertical: 1,
+                  horizontal: 10,
+                ),
+                underline: Container(),
+                dropdownColor:
+                    Theme.of(context).colorScheme.primaryContainer,
+              ),
             ),
-          ),
+            const SizedBox(height: 10),
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: _isLoading
+                  ? const CircularProgressIndicator()
+                  : Row(
+                      children: [
+                        const Text(
+                          'ID :  ',
+                          style: TextStyle(
+                              fontWeight: FontWeight.bold, fontSize: 17),
+                        ),
+                        Text(
+                          _validSelectedEquipmentId == null
+                              ? 'No equipments available'
+                              : _validSelectedEquipmentId!,
+                          style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                            fontStyle: FontStyle.italic,
+                            color: _validSelectedEquipmentId == null
+                                ? Colors.red
+                                : Colors.green,
+                            fontSize: 17,
+                          ),
+                        ),
+                      ],
+                    ),
+            ),
+            const SizedBox(height: 10),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.end,
+              children: [
+                TextButton(
+                  onPressed: () {
+                    Navigator.pop(context);
+                  },
+                  child: const Text('Cancel'),
+                ),
+                const SizedBox(width: 5),
+                ElevatedButton.icon(
+                  onPressed: _isLoading
+                      ? null
+                      : () {
+                          if (_validSelectedEquipmentId == null) {
+                            showDialog(
+                              context: context,
+                              builder: (ctx) => AlertDialog(
+                                title:
+                                    const Text('No Equipments available'),
+                                content: const Text(
+                                    'Please try again later or choose a different equipment or sport'),
+                                actions: [
+                                  TextButton(
+                                    onPressed: () {
+                                      Navigator.pop(ctx);
+                                    },
+                                    child: const Text('Okay'),
+                                  ),
+                                ],
+                              ),
+                            );
+                          } else {
+                            widget.addEquipment(_validSelectedEquipmentId!,
+                                _selectedEquipment!);
+                            Navigator.pop(context);
+                          }
+                        },
+                  icon: const Icon(Icons.add),
+                  label: const Text('Add Item'),
+                  style: ElevatedButton.styleFrom(
+                    foregroundColor: Colors.white,
+                    backgroundColor: Theme.of(context).colorScheme.primary,
+                  ),
+                ),
+              ],
+            )
+          ],
         );
       }),
     );

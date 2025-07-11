@@ -89,434 +89,307 @@ class _ReturnScreenOverlayState extends ConsumerState<ReturnScreenOverlay> {
 
     bool deadLineCrossed = DateTime.now().isAfter(deadline);
 
+    Widget buildCell(String text, {bool isHeader = false, isLast = false}) {
+      return Container(
+        padding: const EdgeInsets.all(8),
+        decoration: BoxDecoration(
+          border: !isLast
+              ? Border(
+                  bottom: BorderSide(color: Colors.grey, width: 0.5),
+                )
+              : null,
+        ),
+        child: Text(
+          text,
+          style: isHeader ? const TextStyle(fontWeight: FontWeight.bold) : null,
+        ),
+      );
+    }
+
+    Widget issuedEquipmentsTable(Map<String, String> equipmentNames) {
+      final entries = equipmentNames.entries.toList();
+      return Container(
+        padding: const EdgeInsets.all(0),
+        decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(7),
+            border: Border.all(
+              color: Colors.grey,
+              width: 0.5,
+            )),
+        child: Table(
+          columnWidths: const {
+            0: FlexColumnWidth(1),
+            1: FlexColumnWidth(1),
+          },
+          defaultVerticalAlignment: TableCellVerticalAlignment.middle,
+          children: <TableRow>[
+            // table heading
+            TableRow(
+              children: [
+                buildCell('Equipment', isHeader: true),
+                buildCell('ID', isHeader: true),
+              ],
+            ),
+            for (int i = 0; i < entries.length; i++)
+              TableRow(
+                children: [
+                  buildCell(entries[i].value, isLast: i == entries.length - 1),
+                  buildCell(entries[i].key, isLast: i == entries.length - 1),
+                ],
+              ),
+          ],
+        ),
+      );
+    }
+
+    Widget timeContainer(String text, DateTime time) {
+      return Container(
+        padding: const EdgeInsets.all(8),
+        decoration: BoxDecoration(
+          color: Theme.of(context).colorScheme.primaryContainer,
+          borderRadius: BorderRadius.circular(7),
+        ),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(text,
+                style: TextStyle(
+                  fontWeight: FontWeight.bold,
+                )),
+            const SizedBox(height: 5),
+            Text(dateTimeFormatter(time),
+                style: TextStyle(
+                  fontSize: 13,
+                  fontStyle: FontStyle.italic,
+                )),
+          ],
+        ),
+      );
+    }
+
     return LayoutBuilder(
       builder: (context, constraints) {
-        return ConstrainedBox(
-          constraints: BoxConstraints(
-            minWidth: constraints.minWidth,
-            maxHeight: constraints.maxHeight,
+        return Padding(
+          padding: EdgeInsets.only(
+            top: 30,
+            left: 25,
+            right: 25,
+            bottom: 8,
           ),
-          child: Padding(
-            padding: const EdgeInsets.all(30.0),
-            child: _isLoading
-                ? const Center(
+          child: _isLoading
+              ? SizedBox(
+                height: constraints.minHeight,
+                width: constraints.minWidth,
+                child: const Center(
                     child: CircularProgressIndicator(),
-                  )
-                : Column(
-                    children: [
-                      Row(
-                        children: [
-                          Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                            children: [
-                              Row(
-                                children: [
-                                  const Icon(
-                                    Icons.person,
-                                    size: 30,
-                                  ),
-                                  Text(
-                                    studentDetails.usn,
-                                    style: Theme.of(context)
-                                        .textTheme
-                                        .titleLarge!
-                                        .copyWith(
-                                          color: Theme.of(context)
-                                              .colorScheme
-                                              .tertiary,
-                                          fontWeight: FontWeight.bold,
-                                        ),
-                                  ),
-                                ],
-                              ),
-                              const SizedBox(height: 10),
-                              Row(
-                                children: [
-                                  const Icon(
-                                    Icons.call,
-                                    size: 22,
-                                  ),
-                                  const SizedBox(width: 3),
-                                  Text(
-                                    studentDetails.phNo,
-                                    style:
-                                        Theme.of(context).textTheme.bodyMedium,
-                                  ),
-                                ],
-                              ),
-                              const SizedBox(height: 5),
-                              Row(
-                                children: [
-                                  const Icon(
-                                    Icons.email_outlined,
-                                    size: 22,
-                                  ),
-                                  const SizedBox(width: 3),
-                                  Text(
-                                    studentDetails.emailId,
-                                    style:
-                                        Theme.of(context).textTheme.bodySmall,
-                                  ),
-                                ],
-                              ),
-                            ],
-                          ),
-                        ],
-                      ),
-                      const SizedBox(
-                        height: 15,
-                      ),
-                      Container(
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(20),
-                          color: Theme.of(context).colorScheme.primaryContainer,
-                          boxShadow: const [
-                            BoxShadow(
-                              color: Colors.black26,
-                              offset: Offset(0.0, 1.0),
-                              blurRadius: 3.0,
-                            ),
-                          ],
-                        ),
-                        child: Padding(
-                          padding: const EdgeInsets.symmetric(
-                              vertical: 20, horizontal: 5),
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              /*Padding(
-                                padding:
-                                    const EdgeInsets.only(left: 20, bottom: 10),
-                                child: Text(
-                                  equipmentList.first.sport,
+                  ),
+              )
+              : Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Row(
+                      children: [
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                          children: [
+                            Row(
+                              children: [
+                                const Icon(
+                                  Icons.person,
+                                  size: 30,
+                                ),
+                                Text(
+                                  studentDetails.usn,
                                   style: Theme.of(context)
                                       .textTheme
                                       .titleLarge!
                                       .copyWith(
                                         color: Theme.of(context)
                                             .colorScheme
-                                            .primary,
+                                            .tertiary,
                                         fontWeight: FontWeight.bold,
                                       ),
                                 ),
-                              ),
-                              const SizedBox(width: 5),*/
-                              Padding(
-                                padding: const EdgeInsets.only(left: 10),
-                                child: Row(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Container(
-                                      padding: const EdgeInsets.all(10),
-                                      decoration: BoxDecoration(
-                                        borderRadius: BorderRadius.circular(15),
-                                        color: Theme.of(context)
-                                            .colorScheme
-                                            .primary,
-                                        boxShadow: const [
-                                          BoxShadow(
-                                            color: Colors.grey,
-                                            offset: Offset(0.0, 1.0),
-                                            blurRadius: 3.0,
-                                          )
-                                        ],
-                                      ),
-                                      child: Column(
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.start,
-                                        children: [
-                                          Text(
-                                            'Issued Items',
-                                            style: Theme.of(context)
-                                                .textTheme
-                                                .titleMedium!
-                                                .copyWith(
-                                                  color: Colors.white,
-                                                  fontWeight: FontWeight.bold,
-                                                ),
-                                          ),
-                                          const SizedBox(height: 5),
-                                          SizedBox(
-                                            height: 105,
-                                            width: 130,
-                                            child: SingleChildScrollView(
-                                              scrollDirection: Axis.vertical,
-                                              child: Column(
-                                                crossAxisAlignment:
-                                                    CrossAxisAlignment.start,
-                                                children: [
-                                                  SingleChildScrollView(
-                                                    scrollDirection:
-                                                        Axis.horizontal,
-                                                    child: Column(
-                                                      crossAxisAlignment:
-                                                          CrossAxisAlignment
-                                                              .start,
-                                                      children: [
-                                                        for (final e
-                                                            in equipmentNames
-                                                                .entries)
-                                                          Row(
-                                                            children: [
-                                                              Text(
-                                                                e.value,
-                                                                style: Theme.of(
-                                                                        context)
-                                                                    .textTheme
-                                                                    .bodyMedium!
-                                                                    .copyWith(
-                                                                        color: Colors
-                                                                            .white),
-                                                              ),
-                                                              const Icon(
-                                                                Icons
-                                                                    .arrow_right_alt_rounded,
-                                                                size: 25,
-                                                                color: Colors
-                                                                    .white,
-                                                              ),
-                                                              Text(
-                                                                e.key,
-                                                                style: Theme.of(
-                                                                        context)
-                                                                    .textTheme
-                                                                    .bodyMedium!
-                                                                    .copyWith(
-                                                                        color: Colors
-                                                                            .white),
-                                                              )
-                                                            ],
-                                                          )
-                                                      ],
-                                                    ),
-                                                  ),
-                                                ],
-                                              ),
-                                            ),
-                                          ),
-                                        ],
-                                      ),
-                                    ),
-                                    const SizedBox(width: 15),
-                                    Column(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      children: [
-                                        Container(
-                                          padding: const EdgeInsets.all(10),
-                                          decoration: BoxDecoration(
-                                            borderRadius:
-                                                BorderRadius.circular(15),
-                                            color: Theme.of(context)
-                                                .colorScheme
-                                                .primary,
-                                            boxShadow: const [
-                                              BoxShadow(
-                                                color: Colors.grey,
-                                                offset: Offset(0.0, 1.0),
-                                                blurRadius: 3.0,
-                                              ),
-                                            ],
-                                          ),
-                                          child: Column(
-                                            crossAxisAlignment:
-                                                CrossAxisAlignment.start,
-                                            children: [
-                                              Text(
-                                                'Issued Time',
-                                                style: Theme.of(context)
-                                                    .textTheme
-                                                    .titleMedium!
-                                                    .copyWith(
-                                                        fontWeight:
-                                                            FontWeight.bold,
-                                                        color: Colors.white),
-                                              ),
-                                              const SizedBox(height: 5),
-                                              Text(
-                                                dateTimeFormatter(
-                                                  widget
-                                                      .issuedEquipmentsReturnData
-                                                      .issuedTime
-                                                      .toDate(),
-                                                ),
-                                                style: Theme.of(context)
-                                                    .textTheme
-                                                    .labelLarge!
-                                                    .copyWith(
-                                                      color: Colors.white,
-                                                      fontStyle:
-                                                          FontStyle.italic,
-                                                    ),
-                                              ),
-                                            ],
-                                          ),
-                                        ),
-                                        const SizedBox(
-                                          height: 10,
-                                        ),
-                                        Container(
-                                          padding: const EdgeInsets.all(10),
-                                          decoration: BoxDecoration(
-                                            borderRadius:
-                                                BorderRadius.circular(15),
-                                            color: Theme.of(context)
-                                                .colorScheme
-                                                .primary,
-                                            boxShadow: const [
-                                              BoxShadow(
-                                                color: Colors.grey,
-                                                offset: Offset(0.0, 1.0),
-                                                blurRadius: 3.0,
-                                              ),
-                                            ],
-                                          ),
-                                          child: Column(
-                                            crossAxisAlignment:
-                                                CrossAxisAlignment.start,
-                                            children: [
-                                              Text(
-                                                'Deadline',
-                                                style: Theme.of(context)
-                                                    .textTheme
-                                                    .titleMedium!
-                                                    .copyWith(
-                                                      fontWeight:
-                                                          FontWeight.bold,
-                                                      color: Colors.white,
-                                                    ),
-                                              ),
-                                              const SizedBox(height: 5),
-                                              Text(
-                                                dateTimeFormatter(deadline),
-                                                style: Theme.of(context)
-                                                    .textTheme
-                                                    .labelLarge!
-                                                    .copyWith(
-                                                      color: Colors.white,
-                                                      fontStyle:
-                                                          FontStyle.italic,
-                                                    ),
-                                              ),
-                                            ],
-                                          ),
-                                        ),
-                                      ],
-                                    )
-                                  ],
+                              ],
+                            ),
+                            const SizedBox(height: 10),
+                            Row(
+                              children: [
+                                const Icon(
+                                  Icons.call,
+                                  size: 22,
                                 ),
-                              ),
-                            ],
-                          ),
-                        ),
-                      ),
-                      const SizedBox(height: 15),
-                      Container(
-                        padding: const EdgeInsets.all(15),
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(20),
-                          color: Theme.of(context).colorScheme.primaryContainer,
-                          boxShadow: const [
-                            BoxShadow(
-                              color: Colors.black26,
-                              offset: Offset(0.0, 1.0),
-                              blurRadius: 3.0,
+                                const SizedBox(width: 3),
+                                Text(
+                                  studentDetails.phNo,
+                                  style: Theme.of(context).textTheme.bodyMedium,
+                                ),
+                              ],
+                            ),
+                            const SizedBox(height: 5),
+                            Row(
+                              children: [
+                                const Icon(
+                                  Icons.email_outlined,
+                                  size: 22,
+                                ),
+                                const SizedBox(width: 3),
+                                Text(
+                                  studentDetails.emailId,
+                                  style: Theme.of(context).textTheme.bodySmall,
+                                ),
+                              ],
                             ),
                           ],
                         ),
-                        child: deadLineCrossed
-                            ? Row(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  const Icon(
-                                    Icons.cancel_outlined,
-                                    color: Colors.red,
-                                    size: 30,
-                                  ),
-                                  const SizedBox(width: 7),
-                                  Text(
-                                    'deadline crossed',
-                                    style: Theme.of(context)
-                                        .textTheme
-                                        .bodyLarge!
-                                        .copyWith(color: Colors.red),
-                                  ),
-                                ],
-                              )
-                            : Row(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  const Icon(
-                                    Icons.check_circle_outline_rounded,
-                                    color: Colors.green,
-                                    size: 30,
-                                  ),
-                                  const SizedBox(width: 7),
-                                  Text(
-                                    'within deadline',
-                                    style: Theme.of(context)
-                                        .textTheme
-                                        .bodyLarge!
-                                        .copyWith(color: Colors.green),
-                                  ),
-                                ],
-                              ),
+                      ],
+                    ),
+                    Divider(
+                      color: Theme.of(context).colorScheme.primary,
+                      thickness: 0.5,
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.only(bottom: 5),
+                      child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Text("Issued items",
+                                style: Theme.of(context)
+                                    .textTheme
+                                    .bodyLarge!
+                                    .copyWith(
+                                      color:
+                                          Theme.of(context).colorScheme.primary,
+                                      fontWeight: FontWeight.bold,
+                                    )),
+                            Text(
+                                "Sport: ${widget.issuedEquipmentsReturnData.sport}",
+                                style: Theme.of(context)
+                                    .textTheme
+                                    .bodyLarge!
+                                    .copyWith(
+                                      color:
+                                          Theme.of(context).colorScheme.primary,
+                                      fontWeight: FontWeight.bold,
+                                    )),
+                          ]),
+                    ),
+                    issuedEquipmentsTable(equipmentNames),
+                    const SizedBox(height: 5),
+                    Row(
+                      children: [
+                        Expanded(
+                            child: timeContainer(
+                          'Issued Time',
+                          widget.issuedEquipmentsReturnData.issuedTime.toDate(),
+                        )),
+                        const SizedBox(width: 5),
+                        Expanded(
+                            child: timeContainer(
+                          'Deadline',
+                          deadline,
+                        )),
+                      ],
+                    ),
+                    const SizedBox(height: 5),
+                    Container(
+                      padding: const EdgeInsets.all(8),
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(7),
+                        color: Theme.of(context).colorScheme.primaryContainer,
                       ),
-                      const SizedBox(
-                        height: 15,
-                      ),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        children: [
-                          deadLineCrossed
-                              ? TextButton(
-                                  onPressed: () {},
-                                  child: Text(
-                                    'Penalize',
-                                    style: Theme.of(context)
-                                        .textTheme
-                                        .bodyMedium!
-                                        .copyWith(
-                                          color: Colors.red,
-                                          fontWeight: FontWeight.bold,
-                                        ),
-                                  ),
-                                )
-                              : Container(),
-                          const Spacer(),
-                          TextButton(
-                            onPressed: () {
-                              Navigator.of(context).pop();
-                            },
-                            child: const Text('Cancel'),
-                          ),
-                          const SizedBox(width: 5),
-                          ElevatedButton(
-                            style: ElevatedButton.styleFrom(
-                              backgroundColor:
-                                  Theme.of(context).colorScheme.primary,
-                              foregroundColor:
-                                  Theme.of(context).colorScheme.onPrimary,
+                      child: deadLineCrossed
+                          ? Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                const Icon(
+                                  Icons.cancel_outlined,
+                                  color: Colors.red,
+                                  size: 30,
+                                ),
+                                const SizedBox(width: 7),
+                                Text(
+                                  'deadline crossed',
+                                  style: Theme.of(context)
+                                      .textTheme
+                                      .bodyLarge!
+                                      .copyWith(color: Colors.red),
+                                ),
+                              ],
+                            )
+                          : Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                const Icon(
+                                  Icons.check_circle_outline_rounded,
+                                  color: Colors.green,
+                                  size: 30,
+                                ),
+                                const SizedBox(width: 7),
+                                Text(
+                                  'within deadline',
+                                  style: Theme.of(context)
+                                      .textTheme
+                                      .bodyLarge!
+                                      .copyWith(color: Colors.green),
+                                ),
+                              ],
                             ),
-                            onPressed: () {
-                              setState(() {
-                                _isReturning = true;
-                              });
-                              confirmReturn(widget.issuedEquipmentsReturnData
-                                  .issuedEquipmentsIds);
-                              Navigator.of(context).pop();
-                            },
-                            child: _isReturning
-                                ? const CircularProgressIndicator(
-                                    color: Colors.white)
-                                : const Text('Returned'),
+                    ),
+                    const SizedBox(
+                      height: 8,
+                    ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      children: [
+                        deadLineCrossed
+                            ? TextButton(
+                                onPressed: () {},
+                                child: Text(
+                                  'Penalize',
+                                  style: Theme.of(context)
+                                      .textTheme
+                                      .bodyMedium!
+                                      .copyWith(
+                                        color: Colors.red,
+                                        fontWeight: FontWeight.bold,
+                                      ),
+                                ),
+                              )
+                            : Container(),
+                        const Spacer(),
+                        TextButton(
+                          onPressed: () {
+                            Navigator.of(context).pop();
+                          },
+                          child: const Text('Cancel'),
+                        ),
+                        const SizedBox(width: 5),
+                        ElevatedButton(
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor:
+                                Theme.of(context).colorScheme.primary,
+                            foregroundColor:
+                                Theme.of(context).colorScheme.onPrimary,
                           ),
-                        ],
-                      ),
-                    ],
-                  ),
-          ),
+                          onPressed: () {
+                            setState(() {
+                              _isReturning = true;
+                            });
+                            confirmReturn(widget.issuedEquipmentsReturnData
+                                .issuedEquipmentsIds);
+                            Navigator.of(context).pop();
+                          },
+                          child: _isReturning
+                              ? const CircularProgressIndicator(
+                                  color: Colors.white)
+                              : const Text('Returned'),
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
         );
       },
     );
