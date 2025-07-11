@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:sports_complex_ms/constants/sport_code_icon_generator.dart';
 import 'package:sports_complex_ms/staff_side_app/models/issue_return_section/issued_equipments.dart';
 import 'package:sports_complex_ms/staff_side_app/screens/issue_return_section/return_screen_overlay.dart';
 
@@ -26,13 +27,15 @@ class IssuedEquipmentCard extends StatelessWidget {
         isScrollControlled: true,
         constraints: BoxConstraints(
           minWidth: screenWidth,
-          maxHeight: screenHeight * 0.58,
+          minHeight: screenHeight * 0.3,
         ),
         context: context,
-        builder: (ctx) => ReturnScreenOverlay(
-          issuedEquipmentsReturnData: issuedEquipmentsDetails,
-          parentContext: context,
-          //freeEquipments: freeEquipments,
+        builder: (ctx) => SafeArea(
+          child: ReturnScreenOverlay(
+            issuedEquipmentsReturnData: issuedEquipmentsDetails,
+            parentContext: context,
+            //freeEquipments: freeEquipments,
+          ),
         ),
       );
     }
@@ -52,9 +55,10 @@ class IssuedEquipmentCard extends StatelessWidget {
         color: Theme.of(context).colorScheme.primaryContainer,
         child: Padding(
           padding: const EdgeInsets.only(
-              top: 15.0, bottom: 15.0, right: 8.0, left: 20.0),
+              top: 15.0, bottom: 15.0, right: 20.0, left: 20.0),
           child: Row(
-            crossAxisAlignment: CrossAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -91,41 +95,12 @@ class IssuedEquipmentCard extends StatelessWidget {
                   ),
                 ],
               ),
-              const SizedBox(width: 60),
-              Expanded(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    const Padding(
-                      padding: EdgeInsets.only(top: 3),
-                      child: Text(
-                        'Issued Items',
-                        style: TextStyle(
-                          fontSize: 17,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                    ),
-                    SizedBox(
-                      height: 60,
-                      child: SingleChildScrollView(
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: issuedEquipmentsDetails.issuedEquipmentsIds
-                              .map((entry) {
-                            return Text(
-                              entry,
-                              style: const TextStyle(
-                                fontSize: 13,
-                                fontStyle: FontStyle.italic,
-                              ),
-                            );
-                          }).toList(),
-                        ),
-                      ),
-                    )
-                  ],
+              Icon(
+                iconGenerator(
+                  issuedEquipmentsDetails.sport,
                 ),
+                color: Theme.of(context).colorScheme.primary,
+                size: 60,
               )
             ],
           ),

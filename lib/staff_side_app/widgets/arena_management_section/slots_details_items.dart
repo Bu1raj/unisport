@@ -121,7 +121,13 @@ class _SlotsDetailsItemState extends State<SlotsDetailsItem> {
                             children: [
                               const Icon(Icons.email_outlined),
                               const SizedBox(width: 5),
-                              Text(snapshot.data!.emailId),
+                              Flexible(
+                                child: Text(
+                                  snapshot.data!.emailId,
+                                  softWrap: true,
+                                  maxLines: 2,
+                                ),
+                              ),
                             ],
                           ),
                           const SizedBox(height: 10),
@@ -157,7 +163,7 @@ class _SlotsDetailsItemState extends State<SlotsDetailsItem> {
         child: Padding(
           padding: const EdgeInsets.fromLTRB(20, 15, 20, 15),
           child: Row(
-            mainAxisAlignment: MainAxisAlignment.start,
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Text(
                 'Slot ${widget.index + 1}',
@@ -167,7 +173,6 @@ class _SlotsDetailsItemState extends State<SlotsDetailsItem> {
                       fontWeight: FontWeight.bold,
                     ),
               ),
-              const SizedBox(width: 35),
               Row(
                 children: [
                   Icon(
@@ -198,7 +203,6 @@ class _SlotsDetailsItemState extends State<SlotsDetailsItem> {
                   ),
                 ],
               ),
-              const SizedBox(width: 40),
               widget.slotDetails['bookedBy'] == null
                   ? Row(
                       children: [

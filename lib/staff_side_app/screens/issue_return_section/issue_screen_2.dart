@@ -32,22 +32,22 @@ class _IssueScreenTwoState extends ConsumerState<IssueScreenTwo> {
   final TextEditingController usnTextController = TextEditingController();
   bool _isIssuing = false;
 
-  void _openIssueItemOverlay(
-      screenWidth, screenheight, String intialSelectedEquipment, map) {
+  void _openIssueItemOverlay(String intialSelectedEquipment, map) {
     showModalBottomSheet(
       useSafeArea: true,
       isScrollControlled: true,
-      constraints: BoxConstraints(
-        minWidth: screenWidth,
-        maxHeight: screenheight * 0.25,
-      ),
       context: context,
-      builder: (ctx) => IssueAnEquipment(
-        selectedSport: _selectedSport,
-        initialSelectedEquipment: initialSelectedEquipment,
-        addEquipment: _addEquipment,
-        temporaryIds: _temporaryIds,
-        map: map,
+      builder: (ctx) => SafeArea(
+        child: Padding(
+          padding: EdgeInsets.all(16),
+          child: IssueAnEquipment(
+            selectedSport: _selectedSport,
+            initialSelectedEquipment: initialSelectedEquipment,
+            addEquipment: _addEquipment,
+            temporaryIds: _temporaryIds,
+            map: map,
+          ),
+        ),
       ),
     );
   }
@@ -219,48 +219,34 @@ class _IssueScreenTwoState extends ConsumerState<IssueScreenTwo> {
                 color: Theme.of(context).colorScheme.primary,
                 child: Padding(
                   padding: const EdgeInsets.fromLTRB(20, 8, 8, 8),
-                  child: SingleChildScrollView(
-                    scrollDirection: Axis.horizontal,
-                    child: Row(
-                      children: [
-                        SizedBox(
-                          width: 80,
-                          child: Text(
-                            _addedEquipmentMap.entries.elementAt(index).value,
-                            style: TextStyle(
-                              color: Theme.of(context).colorScheme.onSecondary,
-                              fontWeight: FontWeight.bold,
-                            ),
-                            maxLines: 1,
-                            overflow: TextOverflow.ellipsis,
-                          ),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text(
+                        _addedEquipmentMap.entries.elementAt(index).value,
+                        style: TextStyle(
+                          color: Theme.of(context).colorScheme.onSecondary,
+                          fontWeight: FontWeight.bold,
                         ),
-                        const SizedBox(width: 10),
-                        SizedBox(
-                          width: 100,
-                          child: SingleChildScrollView(
-                            scrollDirection: Axis.horizontal,
-                            child: Text(
-                              _addedEquipmentMap.entries.elementAt(index).key,
-                              maxLines: 1,
-                              style: TextStyle(
-                                color:
-                                    Theme.of(context).colorScheme.onSecondary,
-                                fontStyle: FontStyle.italic,
-                              ),
-                            ),
-                          ),
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
+                      ),
+                      Text(
+                        _addedEquipmentMap.entries.elementAt(index).key,
+                        maxLines: 1,
+                        style: TextStyle(
+                          color: Theme.of(context).colorScheme.onSecondary,
+                          fontStyle: FontStyle.italic,
                         ),
-                        const SizedBox(width: 10),
-                        IconButton(
-                          color: Colors.white,
-                          onPressed: () {
-                            _deleteEquipment(index);
-                          },
-                          icon: const Icon(Icons.delete),
-                        ),
-                      ],
-                    ),
+                      ),
+                      IconButton(
+                        color: Colors.white,
+                        onPressed: () {
+                          _deleteEquipment(index);
+                        },
+                        icon: const Icon(Icons.delete),
+                      ),
+                    ],
                   ),
                 ),
               ),
@@ -362,7 +348,6 @@ class _IssueScreenTwoState extends ConsumerState<IssueScreenTwo> {
                           ),
                           const SizedBox(height: 5),
                           DropdownButtonFormField(
-                            padding: const EdgeInsets.only(right: 150, left: 0),
                             dropdownColor:
                                 Theme.of(context).colorScheme.primaryContainer,
                             borderRadius: BorderRadius.circular(10),
@@ -434,13 +419,11 @@ class _IssueScreenTwoState extends ConsumerState<IssueScreenTwo> {
                           const SizedBox(width: 20),
                           content,
                           Row(
-                            mainAxisAlignment: MainAxisAlignment.end,
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
                               IconButton.filled(
                                 onPressed: () {
                                   _openIssueItemOverlay(
-                                      screenWidth,
-                                      screenHeight,
                                       initialSelectedEquipment,
                                       sportEquipmentsMap);
                                 },
@@ -448,30 +431,33 @@ class _IssueScreenTwoState extends ConsumerState<IssueScreenTwo> {
                                 icon: const Icon(Icons.add),
                                 color: Colors.white,
                               ),
-                              const SizedBox(width: 100),
-                              TextButton(
-                                onPressed: () {
-                                  widget.switchTab();
-                                },
-                                child: const Text('Cancel'),
-                              ),
-                              const SizedBox(width: 5),
-                              ElevatedButton(
-                                onPressed: () {
-                                  setState(() {
-                                    _isIssuing = true;
-                                  });
-                                  _confirmIssue(ref, context);
-                                },
-                                style: ElevatedButton.styleFrom(
-                                  foregroundColor: Colors.white,
-                                  backgroundColor:
-                                      Theme.of(context).colorScheme.primary,
-                                ),
-                                child: _isIssuing
-                                    ? const CircularProgressIndicator(
-                                        color: Colors.white)
-                                    : const Text('Issue'),
+                              Row(
+                                children: [
+                                  TextButton(
+                                    onPressed: () {
+                                      widget.switchTab();
+                                    },
+                                    child: const Text('Cancel'),
+                                  ),
+                                  const SizedBox(width: 5),
+                                  ElevatedButton(
+                                    onPressed: () {
+                                      setState(() {
+                                        _isIssuing = true;
+                                      });
+                                      _confirmIssue(ref, context);
+                                    },
+                                    style: ElevatedButton.styleFrom(
+                                      foregroundColor: Colors.white,
+                                      backgroundColor:
+                                          Theme.of(context).colorScheme.primary,
+                                    ),
+                                    child: _isIssuing
+                                        ? const CircularProgressIndicator(
+                                            color: Colors.white)
+                                        : const Text('Issue'),
+                                  ),
+                                ],
                               ),
                             ],
                           )
