@@ -52,30 +52,32 @@ class _StudentMainScreenState extends ConsumerState<StudentMainScreen> {
               child: CircularProgressIndicator(),
             ),
           )
-        : Scaffold(
-            appBar: AppBar(
-              title: Text('Hi, ${studentDetails.name}'),
-              toolbarHeight: 75,
-            ),
-            drawer: StudentMainDrawer(studentDetails: studentDetails),
-            body: Padding(
-              padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 15),
-              child: SingleChildScrollView(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    IssuedItemsWidget(studentDetails: studentDetails),
-                    const SizedBox(height: 20),
-                    ArenaBookingWidget(
-                      studentUsn: studentDetails.usn,
-                    ),
-                    const SizedBox(height: 20),
-                    const AvailableTournamentsList(),
-                    const SizedBox(height: 20),
-                  ],
+        : SafeArea(
+          child: Scaffold(
+              appBar: AppBar(
+                title: Text('Hi, ${studentDetails.name}'),
+                toolbarHeight: 75,
+              ),
+              drawer: StudentMainDrawer(studentDetails: studentDetails),
+              body: Padding(
+                padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 15),
+                child: SingleChildScrollView(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      IssuedItemsWidget(studentDetails: studentDetails),
+                      const SizedBox(height: 20),
+                      ArenaBookingWidget(
+                        studentUsn: studentDetails.usn,
+                      ),
+                      const SizedBox(height: 20),
+                      const AvailableTournamentsList(),
+                      const SizedBox(height: 20),
+                    ],
+                  ),
                 ),
               ),
             ),
-          );
+        );
   }
 }

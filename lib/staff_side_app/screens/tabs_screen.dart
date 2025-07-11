@@ -52,98 +52,100 @@ class _TabScreenState extends State<TabScreen>
       activePageTitle = 'Tournament Organization';
     }
 
-    return Scaffold(
-      appBar: AppBar(
-        bottom: _selectedPageIndex == 0 || _selectedPageIndex == 3
-            ? TabBar(
-                controller: _tabController,
-                labelColor: Theme.of(context).colorScheme.tertiary,
-                unselectedLabelColor: Colors.white,
-                indicatorSize: TabBarIndicatorSize.tab,
-                indicator: const BoxDecoration(
-                  color: Colors.white,
-                  borderRadius: BorderRadius.only(
-                    topLeft: Radius.circular(10),
-                    topRight: Radius.circular(10),
+    return SafeArea(
+      child: Scaffold(
+        appBar: AppBar(
+          bottom: _selectedPageIndex == 0 || _selectedPageIndex == 3
+              ? TabBar(
+                  controller: _tabController,
+                  labelColor: Theme.of(context).colorScheme.tertiary,
+                  unselectedLabelColor: Colors.white,
+                  indicatorSize: TabBarIndicatorSize.tab,
+                  indicator: const BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.only(
+                      topLeft: Radius.circular(10),
+                      topRight: Radius.circular(10),
+                    ),
                   ),
-                ),
-                tabs: _selectedPageIndex == 0
-                    ? const [
-                        Tab(
-                          child: Text(
-                            'Issued Items',
-                            style: TextStyle(
-                              fontSize: 20,
+                  tabs: _selectedPageIndex == 0
+                      ? const [
+                          Tab(
+                            child: Text(
+                              'Issued Items',
+                              style: TextStyle(
+                                fontSize: 20,
+                              ),
                             ),
                           ),
-                        ),
-                        Tab(
-                          child: Text(
-                            'Issue',
-                            style: TextStyle(
-                              fontSize: 20,
+                          Tab(
+                            child: Text(
+                              'Issue',
+                              style: TextStyle(
+                                fontSize: 20,
+                              ),
                             ),
                           ),
-                        ),
-                      ]
-                    : const [
-                        Tab(
-                          child: Text(
-                            'Tournaments',
-                            style: TextStyle(
-                              fontSize: 20,
+                        ]
+                      : const [
+                          Tab(
+                            child: Text(
+                              'Tournaments',
+                              style: TextStyle(
+                                fontSize: 20,
+                              ),
                             ),
                           ),
-                        ),
-                        Tab(
-                          child: Text(
-                            'Organize',
-                            style: TextStyle(
-                              fontSize: 20,
+                          Tab(
+                            child: Text(
+                              'Organize',
+                              style: TextStyle(
+                                fontSize: 20,
+                              ),
                             ),
                           ),
-                        ),
-                      ],
-              )
-            : null,
-        title: Text(
-          activePageTitle,
-          style: const TextStyle(
-            fontWeight: FontWeight.bold,
+                        ],
+                )
+              : null,
+          title: Text(
+            activePageTitle,
+            style: const TextStyle(
+              fontWeight: FontWeight.bold,
+            ),
           ),
+          toolbarHeight: 75,
         ),
-        toolbarHeight: 75,
-      ),
-      drawer: MainDrawer(changeSection: _drawerSelectPage),
-      body: activePage,
-      bottomNavigationBar: BottomNavigationBar(
-        backgroundColor: const Color.fromARGB(255, 86, 97, 114),
-        selectedItemColor: Colors.white,
-        unselectedItemColor: Theme.of(context).colorScheme.onPrimaryContainer,
-        onTap: _selectPage,
-        currentIndex: _selectedPageIndex,
-        items: const [
-          BottomNavigationBarItem(
-            backgroundColor: Color.fromARGB(255, 86, 97, 114),
-            icon: Icon(Icons.swap_horizontal_circle),
-            label: 'Issue',
-          ),
-          BottomNavigationBarItem(
-            backgroundColor: Color.fromARGB(255, 86, 97, 114),
-            icon: Icon(Icons.stadium),
-            label: 'Arena',
-          ),
-          BottomNavigationBarItem(
-            backgroundColor: Color.fromARGB(255, 86, 97, 114),
-            icon: Icon(Icons.inventory),
-            label: 'Inventory',
-          ),
-          BottomNavigationBarItem(
-            backgroundColor: Color.fromARGB(255, 86, 97, 114),
-            icon: Icon(Icons.emoji_events),
-            label: 'Tournament',
-          ),
-        ],
+        drawer: MainDrawer(changeSection: _drawerSelectPage),
+        body: activePage,
+        bottomNavigationBar: BottomNavigationBar(
+          backgroundColor: const Color.fromARGB(255, 86, 97, 114),
+          selectedItemColor: Colors.white,
+          unselectedItemColor: Theme.of(context).colorScheme.onPrimaryContainer,
+          onTap: _selectPage,
+          currentIndex: _selectedPageIndex,
+          items: const [
+            BottomNavigationBarItem(
+              backgroundColor: Color.fromARGB(255, 86, 97, 114),
+              icon: Icon(Icons.swap_horizontal_circle),
+              label: 'Issue',
+            ),
+            BottomNavigationBarItem(
+              backgroundColor: Color.fromARGB(255, 86, 97, 114),
+              icon: Icon(Icons.stadium),
+              label: 'Arena',
+            ),
+            BottomNavigationBarItem(
+              backgroundColor: Color.fromARGB(255, 86, 97, 114),
+              icon: Icon(Icons.inventory),
+              label: 'Inventory',
+            ),
+            BottomNavigationBarItem(
+              backgroundColor: Color.fromARGB(255, 86, 97, 114),
+              icon: Icon(Icons.emoji_events),
+              label: 'Tournament',
+            ),
+          ],
+        ),
       ),
     );
   }

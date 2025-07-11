@@ -97,7 +97,7 @@ class _IssueScreenState extends ConsumerState<IssueScreen>
                 8.0,
               ),
               child: SearchBar(
-                elevation: MaterialStateProperty.all(3),
+                elevation: WidgetStateProperty.all(3),
                 constraints: const BoxConstraints(minHeight: 45),
                 textCapitalization: TextCapitalization.characters,
                 controller: searchController,
@@ -109,7 +109,7 @@ class _IssueScreenState extends ConsumerState<IssueScreen>
                   ),
                 ),
                 hintText: 'Search for a USN...',
-                textStyle: MaterialStateProperty.all(
+                textStyle: WidgetStateProperty.all(
                   const TextStyle(
                     fontSize: 15,
                   ),

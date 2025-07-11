@@ -460,548 +460,550 @@ class _ManagementScreenState extends ConsumerState<ManagementScreen> {
     final searchFilteredList = ref.watch(searchListProvider);
     final countMap = ref.watch(countMapProvider);
 
-    return Scaffold(
-      appBar: AppBar(
-        title: Text(widget.sport),
-      ),
-      body: SingleChildScrollView(
-        controller: _scrollController,
-        keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
-        child: Padding(
-          padding: const EdgeInsets.fromLTRB(20, 0, 20, 20),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Padding(
-                padding: const EdgeInsets.only(
-                  top: 20,
-                ),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceAround,
-                  children: [
-                    Text(
-                      'Choose Equipment',
-                      style: Theme.of(context).textTheme.bodyLarge!.copyWith(
-                            fontSize: 18,
-                            color: Colors.grey.shade800,
-                          ),
-                    ),
-                    DecoratedBox(
-                      decoration: BoxDecoration(
-                        color: Theme.of(context).colorScheme.primaryContainer,
-                        borderRadius: BorderRadius.circular(10),
-                      ),
-                      child: DropdownButton(
-                        value: _selectedEquipment,
-                        items: [
-                          for (final eqp in widget.availableEquipments)
-                            DropdownMenuItem(
-                              value: eqp,
-                              child: Padding(
-                                padding: const EdgeInsets.only(
-                                  right: 30,
-                                ),
-                                child: Text(eqp),
-                              ),
-                            ),
-                        ],
-                        onChanged: (value) async {
-                          setState(() {
-                            _selectedEquipment = value!;
-                            _isSearching = false;
-                          });
-                          await loadDetails(
-                              ref, widget.sport, _selectedEquipment);
-                          _searchController.clear();
-                          ref
-                              .read(mainInventorySearchQueryProvider.notifier)
-                              .update((state) => '');
-
-                          //clear filters
-                          _selectedFilter = 'all';
-                          ref
-                              .read(filterProvider.notifier)
-                              .update((state) => 'all');
-                        },
-                        padding: const EdgeInsets.symmetric(
-                          vertical: 5,
-                          horizontal: 15,
-                        ),
-                        underline: Container(),
-                        dropdownColor:
-                            Theme.of(context).colorScheme.primaryContainer,
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-              const Divider(
-                height: 30,
-                color: Colors.black38,
-              ),
-              _isLoadingDetails
-                  ? const Center(
-                      child: CircularProgressIndicator(),
-                    )
-                  : GridView.count(
-                      physics: const NeverScrollableScrollPhysics(),
-                      shrinkWrap: true,
-                      crossAxisCount: 2,
-                      crossAxisSpacing: 10,
-                      mainAxisSpacing: 10,
-                      childAspectRatio: 2,
-                      children: [
-                        Container(
-                          //padding: EdgeInsets.only(left: 30),
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(8),
-                            color:
-                                Theme.of(context).colorScheme.primaryContainer,
-                          ),
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            //crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(
-                                'Total',
-                                style: Theme.of(context).textTheme.bodyMedium,
-                              ),
-                              Text(
-                                countMap['total'].toString(),
-                                style:
-                                    Theme.of(context).textTheme.headlineLarge,
-                              ),
-                            ],
-                          ),
-                        ),
-                        Container(
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(8),
-                            color:
-                                Theme.of(context).colorScheme.primaryContainer,
-                          ),
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              Text(
-                                'New Stock',
-                                style: Theme.of(context)
-                                    .textTheme
-                                    .bodyMedium!
-                                    .copyWith(
-                                      color: Colors.blue,
-                                    ),
-                              ),
-                              Text(
-                                countMap['new stock'].toString(),
-                                style: Theme.of(context)
-                                    .textTheme
-                                    .headlineLarge!
-                                    .copyWith(
-                                      color: Colors.blue,
-                                    ),
-                              ),
-                            ],
-                          ),
-                        ),
-                        Container(
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(8),
-                            color:
-                                Theme.of(context).colorScheme.primaryContainer,
-                          ),
-                          child: Stack(
-                            children: [
-                              Center(
-                                child: Column(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: [
-                                    Text(
-                                      'In Use',
-                                      style: Theme.of(context)
-                                          .textTheme
-                                          .bodyMedium!
-                                          .copyWith(
-                                            color: Colors.green,
-                                          ),
-                                    ),
-                                    Text(
-                                      countMap['in use'].toString(),
-                                      style: Theme.of(context)
-                                          .textTheme
-                                          .headlineLarge!
-                                          .copyWith(
-                                            color: Colors.green,
-                                          ),
-                                    ),
-                                  ],
-                                ),
-                              ),
-                              Positioned(
-                                bottom: 0,
-                                right: 0,
-                                child: IconButton(
-                                  icon: const Icon(Icons.edit),
-                                  onPressed: () {
-                                    _editInUseNumber(ref, countMap);
-                                  },
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                        Container(
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(8),
-                            color:
-                                Theme.of(context).colorScheme.primaryContainer,
-                          ),
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              Text(
-                                'Damaged',
-                                style: Theme.of(context)
-                                    .textTheme
-                                    .bodyMedium!
-                                    .copyWith(
-                                      color: Colors.red,
-                                    ),
-                              ),
-                              Text(
-                                countMap['damaged'].toString(),
-                                style: Theme.of(context)
-                                    .textTheme
-                                    .headlineLarge!
-                                    .copyWith(
-                                      color: Colors.red,
-                                    ),
-                              ),
-                            ],
-                          ),
-                        ),
-                      ],
-                    ),
-              const Divider(
-                height: 30,
-                color: Colors.black38,
-              ),
-              Card(
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(16.0),
-                ),
-                clipBehavior: Clip.hardEdge,
-                elevation: 2,
-                child: SizedBox(
-                  width: double.infinity,
-                  height: 300,
-                  child: Column(
+    return SafeArea(
+      child: Scaffold(
+        appBar: AppBar(
+          title: Text(widget.sport),
+        ),
+        body: SingleChildScrollView(
+          controller: _scrollController,
+          keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
+          child: Padding(
+            padding: const EdgeInsets.fromLTRB(20, 0, 20, 20),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Padding(
+                  padding: const EdgeInsets.only(
+                    top: 20,
+                  ),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceAround,
                     children: [
-                      Container(
-                        width: double.infinity,
-                        height: 50,
-                        color: Theme.of(context).colorScheme.primary,
-                        child: Padding(
+                      Text(
+                        'Choose Equipment',
+                        style: Theme.of(context).textTheme.bodyLarge!.copyWith(
+                              fontSize: 18,
+                              color: Colors.grey.shade800,
+                            ),
+                      ),
+                      DecoratedBox(
+                        decoration: BoxDecoration(
+                          color: Theme.of(context).colorScheme.primaryContainer,
+                          borderRadius: BorderRadius.circular(10),
+                        ),
+                        child: DropdownButton(
+                          value: _selectedEquipment,
+                          items: [
+                            for (final eqp in widget.availableEquipments)
+                              DropdownMenuItem(
+                                value: eqp,
+                                child: Padding(
+                                  padding: const EdgeInsets.only(
+                                    right: 30,
+                                  ),
+                                  child: Text(eqp),
+                                ),
+                              ),
+                          ],
+                          onChanged: (value) async {
+                            setState(() {
+                              _selectedEquipment = value!;
+                              _isSearching = false;
+                            });
+                            await loadDetails(
+                                ref, widget.sport, _selectedEquipment);
+                            _searchController.clear();
+                            ref
+                                .read(mainInventorySearchQueryProvider.notifier)
+                                .update((state) => '');
+      
+                            //clear filters
+                            _selectedFilter = 'all';
+                            ref
+                                .read(filterProvider.notifier)
+                                .update((state) => 'all');
+                          },
                           padding: const EdgeInsets.symmetric(
                             vertical: 5,
-                            horizontal: 10,
+                            horizontal: 15,
                           ),
-                          child: Row(
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              !_isSearching
-                                  ? IconButton(
-                                      onPressed: () {
-                                        setState(() {
-                                          _isSearching = true;
-                                        });
-                                      },
-                                      icon: const Icon(Icons.search),
-                                      color: Colors.white,
-                                    )
-                                  : IconButton(
-                                      onPressed: () {
-                                        setState(() {
-                                          _searchController.clear();
-                                          //_searchFilteredList = _filteredList;
-                                          ref
-                                              .watch(
-                                                  mainInventorySearchQueryProvider
-                                                      .notifier)
-                                              .update((state) => '');
-                                          _isSearching = false;
-                                        });
-                                      },
-                                      icon: const Icon(Icons.close),
-                                      color: Colors.white,
-                                    ),
-                              Text(
-                                'Equipment List',
-                                style: Theme.of(context)
-                                    .textTheme
-                                    .bodyLarge!
-                                    .copyWith(
-                                      color: Colors.white,
-                                    ),
-                              ),
-                              PopupMenuButton(
-                                enabled: !_isSearching ? true : false,
-                                icon: const Icon(Icons.filter_list),
-                                iconColor: Colors.white,
-                                onSelected: (value) {
-                                  setState(() {
-                                    _selectedFilter = value;
-                                    ref
-                                        .watch(filterProvider.notifier)
-                                        .update((state) => value);
-                                  });
-                                },
-                                itemBuilder: (ctx) {
-                                  return [
-                                    for (final filter in filtersLabelList)
-                                      PopupMenuItem(
-                                        value: filter,
-                                        child: Row(
-                                          children: [
-                                            Text(filter),
-                                            const SizedBox(width: 7),
-                                            _selectedFilter == filter
-                                                ? const Icon(
-                                                    Icons.check,
-                                                    color: Colors.green,
-                                                    size: 20,
-                                                  )
-                                                : Container(),
-                                          ],
-                                        ),
-                                      ),
-                                  ];
-                                },
-                              ),
-                            ],
-                          ),
+                          underline: Container(),
+                          dropdownColor:
+                              Theme.of(context).colorScheme.primaryContainer,
                         ),
                       ),
-                      _isSearching
-                          ? Padding(
-                              padding: const EdgeInsets.symmetric(
-                                  vertical: 5, horizontal: 15),
-                              child: TextField(
-                                autofocus: true,
-                                scrollPadding: EdgeInsets.only(
-                                  bottom:
-                                      MediaQuery.of(context).viewInsets.bottom,
-                                ),
-                                decoration: InputDecoration(
-                                  isDense: true,
-                                  hintText: 'Search an ID',
-                                  suffixIcon: IconButton(
-                                    onPressed: () {
-                                      _searchController.clear();
-
-                                      ref
-                                          .read(mainInventorySearchQueryProvider
-                                              .notifier)
-                                          .update((state) => '');
-                                    },
-                                    iconSize: 20,
-                                    icon: const Icon(Icons.close),
-                                  ),
-                                ),
-                                textCapitalization:
-                                    TextCapitalization.characters,
-                                controller: _searchController,
-                                onChanged: (value) {
-                                  //search(value);
-                                  ref
-                                      .read(mainInventorySearchQueryProvider
-                                          .notifier)
-                                      .update((state) => value.trim());
-                                },
-                              ),
-                            )
-                          : const SizedBox(height: 0, width: 0),
-                      _isLoadingDetails
-                          ? const Center(child: CircularProgressIndicator())
-                          : Expanded(
-                              child: ListView.separated(
-                                separatorBuilder: (context, index) =>
-                                    const Divider(
-                                  height: 5,
-                                  color: Colors.black38,
-                                  indent: 10,
-                                  endIndent: 10,
-                                ),
-                                itemCount: searchFilteredList.length,
-                                itemBuilder: (ctx, index) => ListTile(
-                                  contentPadding: const EdgeInsets.symmetric(
-                                      horizontal: 25),
-                                  onTap: () {
-                                    _changeStatus(
-                                      searchFilteredList[index].equipmentId,
-                                      searchFilteredList[index].status,
-                                      ref,
-                                    );
-                                  },
-                                  leading: searchFilteredList[index].status ==
-                                          'inUse'
-                                      ? const Icon(
-                                          Icons.check,
-                                          color: Colors.green,
-                                        )
-                                      : searchFilteredList[index].status ==
-                                              'damaged'
-                                          ? const Icon(
-                                              Icons.close,
-                                              color: Colors.red,
-                                            )
-                                          : const Icon(
-                                              Icons.storage,
-                                              color: Colors.blue,
-                                            ),
-                                  title: Text(
-                                    searchFilteredList[index].equipmentId,
-                                    style: Theme.of(context)
-                                        .textTheme
-                                        .bodyLarge!
-                                        .copyWith(
-                                          fontWeight: FontWeight.bold,
-                                        ),
-                                  ),
-                                  trailing: Text(
-                                    searchFilteredList[index].status,
-                                    style: Theme.of(context)
-                                        .textTheme
-                                        .bodyMedium!
-                                        .copyWith(
-                                          color: searchFilteredList[index]
-                                                      .status ==
-                                                  'inUse'
-                                              ? const Color.fromARGB(
-                                                  255, 2, 172, 8)
-                                              : searchFilteredList[index]
-                                                          .status ==
-                                                      'damaged'
-                                                  ? const Color.fromARGB(
-                                                      255, 196, 1, 1)
-                                                  : const Color.fromARGB(
-                                                      255, 13, 0, 194),
-                                        ),
-                                  ),
-                                ),
-                              ),
-                            ),
                     ],
                   ),
                 ),
-              ),
-              const Divider(
-                height: 30,
-                color: Colors.black38,
-              ),
-              Container(
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(16.0),
-                  color: Theme.of(context).colorScheme.primaryContainer,
+                const Divider(
+                  height: 30,
+                  color: Colors.black38,
                 ),
-                child: Padding(
-                  padding:
-                      const EdgeInsets.symmetric(vertical: 10, horizontal: 15),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        'Add new stock',
-                        style: Theme.of(context).textTheme.bodyLarge!.copyWith(
-                              fontSize: 20,
-                              color: Theme.of(context).colorScheme.primary,
+                _isLoadingDetails
+                    ? const Center(
+                        child: CircularProgressIndicator(),
+                      )
+                    : GridView.count(
+                        physics: const NeverScrollableScrollPhysics(),
+                        shrinkWrap: true,
+                        crossAxisCount: 2,
+                        crossAxisSpacing: 10,
+                        mainAxisSpacing: 10,
+                        childAspectRatio: 2,
+                        children: [
+                          Container(
+                            //padding: EdgeInsets.only(left: 30),
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(8),
+                              color:
+                                  Theme.of(context).colorScheme.primaryContainer,
                             ),
-                      ),
-                      const SizedBox(height: 15),
-                      _isLoadingDetails
-                          ? const Center(child: CircularProgressIndicator())
-                          : Row(
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              //crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  'Total',
+                                  style: Theme.of(context).textTheme.bodyMedium,
+                                ),
+                                Text(
+                                  countMap['total'].toString(),
+                                  style:
+                                      Theme.of(context).textTheme.headlineLarge,
+                                ),
+                              ],
+                            ),
+                          ),
+                          Container(
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(8),
+                              color:
+                                  Theme.of(context).colorScheme.primaryContainer,
+                            ),
+                            child: Column(
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [
                                 Text(
-                                  'Enter Quantity : ',
+                                  'New Stock',
+                                  style: Theme.of(context)
+                                      .textTheme
+                                      .bodyMedium!
+                                      .copyWith(
+                                        color: Colors.blue,
+                                      ),
+                                ),
+                                Text(
+                                  countMap['new stock'].toString(),
+                                  style: Theme.of(context)
+                                      .textTheme
+                                      .headlineLarge!
+                                      .copyWith(
+                                        color: Colors.blue,
+                                      ),
+                                ),
+                              ],
+                            ),
+                          ),
+                          Container(
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(8),
+                              color:
+                                  Theme.of(context).colorScheme.primaryContainer,
+                            ),
+                            child: Stack(
+                              children: [
+                                Center(
+                                  child: Column(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      Text(
+                                        'In Use',
+                                        style: Theme.of(context)
+                                            .textTheme
+                                            .bodyMedium!
+                                            .copyWith(
+                                              color: Colors.green,
+                                            ),
+                                      ),
+                                      Text(
+                                        countMap['in use'].toString(),
+                                        style: Theme.of(context)
+                                            .textTheme
+                                            .headlineLarge!
+                                            .copyWith(
+                                              color: Colors.green,
+                                            ),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                                Positioned(
+                                  bottom: 0,
+                                  right: 0,
+                                  child: IconButton(
+                                    icon: const Icon(Icons.edit),
+                                    onPressed: () {
+                                      _editInUseNumber(ref, countMap);
+                                    },
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                          Container(
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(8),
+                              color:
+                                  Theme.of(context).colorScheme.primaryContainer,
+                            ),
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Text(
+                                  'Damaged',
+                                  style: Theme.of(context)
+                                      .textTheme
+                                      .bodyMedium!
+                                      .copyWith(
+                                        color: Colors.red,
+                                      ),
+                                ),
+                                Text(
+                                  countMap['damaged'].toString(),
+                                  style: Theme.of(context)
+                                      .textTheme
+                                      .headlineLarge!
+                                      .copyWith(
+                                        color: Colors.red,
+                                      ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ],
+                      ),
+                const Divider(
+                  height: 30,
+                  color: Colors.black38,
+                ),
+                Card(
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(16.0),
+                  ),
+                  clipBehavior: Clip.hardEdge,
+                  elevation: 2,
+                  child: SizedBox(
+                    width: double.infinity,
+                    height: 300,
+                    child: Column(
+                      children: [
+                        Container(
+                          width: double.infinity,
+                          height: 50,
+                          color: Theme.of(context).colorScheme.primary,
+                          child: Padding(
+                            padding: const EdgeInsets.symmetric(
+                              vertical: 5,
+                              horizontal: 10,
+                            ),
+                            child: Row(
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                !_isSearching
+                                    ? IconButton(
+                                        onPressed: () {
+                                          setState(() {
+                                            _isSearching = true;
+                                          });
+                                        },
+                                        icon: const Icon(Icons.search),
+                                        color: Colors.white,
+                                      )
+                                    : IconButton(
+                                        onPressed: () {
+                                          setState(() {
+                                            _searchController.clear();
+                                            //_searchFilteredList = _filteredList;
+                                            ref
+                                                .watch(
+                                                    mainInventorySearchQueryProvider
+                                                        .notifier)
+                                                .update((state) => '');
+                                            _isSearching = false;
+                                          });
+                                        },
+                                        icon: const Icon(Icons.close),
+                                        color: Colors.white,
+                                      ),
+                                Text(
+                                  'Equipment List',
                                   style: Theme.of(context)
                                       .textTheme
                                       .bodyLarge!
                                       .copyWith(
-                                        fontSize: 18,
+                                        color: Colors.white,
                                       ),
                                 ),
-                                const SizedBox(width: 15),
-                                SizedBox(
-                                  width: 75,
-                                  child: TextField(
-                                    enabled: !_isAddingNewItems,
-                                    focusNode: _focusNodeQuantityController,
-                                    scrollPadding: EdgeInsets.only(
-                                        bottom: MediaQuery.of(context)
-                                            .viewInsets
-                                            .bottom),
-                                    style: const TextStyle(fontSize: 20),
-                                    textAlign: TextAlign.center,
-                                    controller: _quantityController,
-                                    keyboardType: TextInputType.number,
-                                    decoration: const InputDecoration(
-                                      hintText: 'Ex: 1',
-                                      hintStyle: TextStyle(
-                                        fontSize: 17,
-                                        color: Colors.black45,
-                                      ),
-                                      contentPadding:
-                                          EdgeInsets.fromLTRB(10, 7, 10, 7),
-                                    ),
-                                  ),
-                                )
+                                PopupMenuButton(
+                                  enabled: !_isSearching ? true : false,
+                                  icon: const Icon(Icons.filter_list),
+                                  iconColor: Colors.white,
+                                  onSelected: (value) {
+                                    setState(() {
+                                      _selectedFilter = value;
+                                      ref
+                                          .watch(filterProvider.notifier)
+                                          .update((state) => value);
+                                    });
+                                  },
+                                  itemBuilder: (ctx) {
+                                    return [
+                                      for (final filter in filtersLabelList)
+                                        PopupMenuItem(
+                                          value: filter,
+                                          child: Row(
+                                            children: [
+                                              Text(filter),
+                                              const SizedBox(width: 7),
+                                              _selectedFilter == filter
+                                                  ? const Icon(
+                                                      Icons.check,
+                                                      color: Colors.green,
+                                                      size: 20,
+                                                    )
+                                                  : Container(),
+                                            ],
+                                          ),
+                                        ),
+                                    ];
+                                  },
+                                ),
                               ],
                             ),
-                      const SizedBox(height: 20),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.end,
-                        children: [
-                          TextButton(
-                            onPressed: _isAddingNewItems
-                                ? null
-                                : () {
-                                    _quantityController.clear();
+                          ),
+                        ),
+                        _isSearching
+                            ? Padding(
+                                padding: const EdgeInsets.symmetric(
+                                    vertical: 5, horizontal: 15),
+                                child: TextField(
+                                  autofocus: true,
+                                  scrollPadding: EdgeInsets.only(
+                                    bottom:
+                                        MediaQuery.of(context).viewInsets.bottom,
+                                  ),
+                                  decoration: InputDecoration(
+                                    isDense: true,
+                                    hintText: 'Search an ID',
+                                    suffixIcon: IconButton(
+                                      onPressed: () {
+                                        _searchController.clear();
+      
+                                        ref
+                                            .read(mainInventorySearchQueryProvider
+                                                .notifier)
+                                            .update((state) => '');
+                                      },
+                                      iconSize: 20,
+                                      icon: const Icon(Icons.close),
+                                    ),
+                                  ),
+                                  textCapitalization:
+                                      TextCapitalization.characters,
+                                  controller: _searchController,
+                                  onChanged: (value) {
+                                    //search(value);
+                                    ref
+                                        .read(mainInventorySearchQueryProvider
+                                            .notifier)
+                                        .update((state) => value.trim());
                                   },
-                            child: const Text('Clear'),
-                          ),
-                          const SizedBox(width: 5),
-                          ElevatedButton(
-                            style: ElevatedButton.styleFrom(
-                              foregroundColor: Colors.white,
-                              backgroundColor:
-                                  Theme.of(context).colorScheme.primary,
-                            ),
-                            onPressed: () async {
-                              _focusNodeQuantityController.unfocus();
-                              await _addNewStock(ref);
-                              setState(() {
-                                _isAddingNewItems = false;
-                                _quantityController.clear();
-                                _scrollController.animateTo(0,
-                                    duration: const Duration(milliseconds: 700),
-                                    curve: Curves.easeInOut);
-                              });
-                            },
-                            child: _isAddingNewItems
-                                ? const CircularProgressIndicator(
-                                    color: Colors.white)
-                                : const Text('Add'),
-                          ),
-                        ],
-                      ),
-                    ],
+                                ),
+                              )
+                            : const SizedBox(height: 0, width: 0),
+                        _isLoadingDetails
+                            ? const Center(child: CircularProgressIndicator())
+                            : Expanded(
+                                child: ListView.separated(
+                                  separatorBuilder: (context, index) =>
+                                      const Divider(
+                                    height: 5,
+                                    color: Colors.black38,
+                                    indent: 10,
+                                    endIndent: 10,
+                                  ),
+                                  itemCount: searchFilteredList.length,
+                                  itemBuilder: (ctx, index) => ListTile(
+                                    contentPadding: const EdgeInsets.symmetric(
+                                        horizontal: 25),
+                                    onTap: () {
+                                      _changeStatus(
+                                        searchFilteredList[index].equipmentId,
+                                        searchFilteredList[index].status,
+                                        ref,
+                                      );
+                                    },
+                                    leading: searchFilteredList[index].status ==
+                                            'inUse'
+                                        ? const Icon(
+                                            Icons.check,
+                                            color: Colors.green,
+                                          )
+                                        : searchFilteredList[index].status ==
+                                                'damaged'
+                                            ? const Icon(
+                                                Icons.close,
+                                                color: Colors.red,
+                                              )
+                                            : const Icon(
+                                                Icons.storage,
+                                                color: Colors.blue,
+                                              ),
+                                    title: Text(
+                                      searchFilteredList[index].equipmentId,
+                                      style: Theme.of(context)
+                                          .textTheme
+                                          .bodyLarge!
+                                          .copyWith(
+                                            fontWeight: FontWeight.bold,
+                                          ),
+                                    ),
+                                    trailing: Text(
+                                      searchFilteredList[index].status,
+                                      style: Theme.of(context)
+                                          .textTheme
+                                          .bodyMedium!
+                                          .copyWith(
+                                            color: searchFilteredList[index]
+                                                        .status ==
+                                                    'inUse'
+                                                ? const Color.fromARGB(
+                                                    255, 2, 172, 8)
+                                                : searchFilteredList[index]
+                                                            .status ==
+                                                        'damaged'
+                                                    ? const Color.fromARGB(
+                                                        255, 196, 1, 1)
+                                                    : const Color.fromARGB(
+                                                        255, 13, 0, 194),
+                                          ),
+                                    ),
+                                  ),
+                                ),
+                              ),
+                      ],
+                    ),
                   ),
                 ),
-              )
-            ],
+                const Divider(
+                  height: 30,
+                  color: Colors.black38,
+                ),
+                Container(
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(16.0),
+                    color: Theme.of(context).colorScheme.primaryContainer,
+                  ),
+                  child: Padding(
+                    padding:
+                        const EdgeInsets.symmetric(vertical: 10, horizontal: 15),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          'Add new stock',
+                          style: Theme.of(context).textTheme.bodyLarge!.copyWith(
+                                fontSize: 20,
+                                color: Theme.of(context).colorScheme.primary,
+                              ),
+                        ),
+                        const SizedBox(height: 15),
+                        _isLoadingDetails
+                            ? const Center(child: CircularProgressIndicator())
+                            : Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Text(
+                                    'Enter Quantity : ',
+                                    style: Theme.of(context)
+                                        .textTheme
+                                        .bodyLarge!
+                                        .copyWith(
+                                          fontSize: 18,
+                                        ),
+                                  ),
+                                  const SizedBox(width: 15),
+                                  SizedBox(
+                                    width: 75,
+                                    child: TextField(
+                                      enabled: !_isAddingNewItems,
+                                      focusNode: _focusNodeQuantityController,
+                                      scrollPadding: EdgeInsets.only(
+                                          bottom: MediaQuery.of(context)
+                                              .viewInsets
+                                              .bottom),
+                                      style: const TextStyle(fontSize: 20),
+                                      textAlign: TextAlign.center,
+                                      controller: _quantityController,
+                                      keyboardType: TextInputType.number,
+                                      decoration: const InputDecoration(
+                                        hintText: 'Ex: 1',
+                                        hintStyle: TextStyle(
+                                          fontSize: 17,
+                                          color: Colors.black45,
+                                        ),
+                                        contentPadding:
+                                            EdgeInsets.fromLTRB(10, 7, 10, 7),
+                                      ),
+                                    ),
+                                  )
+                                ],
+                              ),
+                        const SizedBox(height: 20),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.end,
+                          children: [
+                            TextButton(
+                              onPressed: _isAddingNewItems
+                                  ? null
+                                  : () {
+                                      _quantityController.clear();
+                                    },
+                              child: const Text('Clear'),
+                            ),
+                            const SizedBox(width: 5),
+                            ElevatedButton(
+                              style: ElevatedButton.styleFrom(
+                                foregroundColor: Colors.white,
+                                backgroundColor:
+                                    Theme.of(context).colorScheme.primary,
+                              ),
+                              onPressed: () async {
+                                _focusNodeQuantityController.unfocus();
+                                await _addNewStock(ref);
+                                setState(() {
+                                  _isAddingNewItems = false;
+                                  _quantityController.clear();
+                                  _scrollController.animateTo(0,
+                                      duration: const Duration(milliseconds: 700),
+                                      curve: Curves.easeInOut);
+                                });
+                              },
+                              child: _isAddingNewItems
+                                  ? const CircularProgressIndicator(
+                                      color: Colors.white)
+                                  : const Text('Add'),
+                            ),
+                          ],
+                        ),
+                      ],
+                    ),
+                  ),
+                )
+              ],
+            ),
           ),
         ),
       ),

@@ -39,20 +39,22 @@ class _SportArenaState extends State<SportArena> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text(widget.sport),
-      ),
-      body: _isLoading
-          ? const Center(child: CircularProgressIndicator())
-          : ListView.builder(
-              itemCount: arenaNameArenaId.length,
-              itemBuilder: (context, index) => ArenaItem(
-                nameId: arenaNameArenaId[index],
-                slotDetails: allArenasSlotDetails[index],
-                sport: widget.sport,
+    return SafeArea(
+      child: Scaffold(
+        appBar: AppBar(
+          title: Text(widget.sport),
+        ),
+        body: _isLoading
+            ? const Center(child: CircularProgressIndicator())
+            : ListView.builder(
+                itemCount: arenaNameArenaId.length,
+                itemBuilder: (context, index) => ArenaItem(
+                  nameId: arenaNameArenaId[index],
+                  slotDetails: allArenasSlotDetails[index],
+                  sport: widget.sport,
+                ),
               ),
-            ),
+      ),
     );
   }
 }

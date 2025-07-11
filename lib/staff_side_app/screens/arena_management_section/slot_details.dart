@@ -25,43 +25,45 @@ class _SlotsDetailsScreenState extends State<SlotsDetailsScreen> {
     /*final timings =
         '${slotsList[0].slotStartTime.format} - ${slotsList[0].slotEndTime.format}';*/
 
-    return Scaffold(
-      appBar: AppBar(
-        title: Text(
-          widget.arenaName,
-          style: Theme.of(context).textTheme.titleLarge!.copyWith(
-                fontWeight: FontWeight.bold,
-                color: Colors.white,
-              ),
+    return SafeArea(
+      child: Scaffold(
+        appBar: AppBar(
+          title: Text(
+            widget.arenaName,
+            style: Theme.of(context).textTheme.titleLarge!.copyWith(
+                  fontWeight: FontWeight.bold,
+                  color: Colors.white,
+                ),
+          ),
         ),
-      ),
-      body: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Image.asset(
-            'assets\\arena_images\\${widget.sport}.jpg',
-            width: double.infinity,
-            height: 300,
-            fit: BoxFit.cover,
-          ),
-          Padding(
-            padding: const EdgeInsets.only(top: 25, left: 15),
-            child: Text(
-              'Slots Details',
-              style: Theme.of(context).textTheme.titleLarge!.copyWith(
-                    color: Theme.of(context).colorScheme.tertiary,
-                  ),
+        body: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Image.asset(
+              'assets\\arena_images\\${widget.sport}.jpg',
+              width: double.infinity,
+              height: 300,
+              fit: BoxFit.cover,
             ),
-          ),
-          Expanded(
-            child: ListView.builder(
-                itemCount: slotsList.length,
-                itemBuilder: (context, index) => SlotsDetailsItem(
-                      index: index,
-                      slotDetails: slotsList[index],
-                    )),
-          ),
-        ],
+            Padding(
+              padding: const EdgeInsets.only(top: 25, left: 15),
+              child: Text(
+                'Slots Details',
+                style: Theme.of(context).textTheme.titleLarge!.copyWith(
+                      color: Theme.of(context).colorScheme.tertiary,
+                    ),
+              ),
+            ),
+            Expanded(
+              child: ListView.builder(
+                  itemCount: slotsList.length,
+                  itemBuilder: (context, index) => SlotsDetailsItem(
+                        index: index,
+                        slotDetails: slotsList[index],
+                      )),
+            ),
+          ],
+        ),
       ),
     );
   }

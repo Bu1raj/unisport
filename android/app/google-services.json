@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "224754537239",
+    "project_id": "sc-management-system-aa21d",
+    "storage_bucket": "sc-management-system-aa21d.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:224754537239:android:1222805329707e9a8b5d52",
+        "android_client_info": {
+          "package_name": "com.example.sports_complex_ms"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCpDRWuPBrGbiOeM2Hy8OdBGdxlcZhJoww"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

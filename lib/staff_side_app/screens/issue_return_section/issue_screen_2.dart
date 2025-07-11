@@ -487,10 +487,12 @@ class _IssueScreenTwoState extends ConsumerState<IssueScreenTwo> {
       );
     }
 
-    return Scaffold(
-      resizeToAvoidBottomInset: false,
-      backgroundColor: Theme.of(context).colorScheme.primaryContainer,
-      body: mainContent,
+    return SafeArea(
+      child: Scaffold(
+        resizeToAvoidBottomInset: false,
+        backgroundColor: Theme.of(context).colorScheme.primaryContainer,
+        body: mainContent,
+      ),
     );
   }
 }
