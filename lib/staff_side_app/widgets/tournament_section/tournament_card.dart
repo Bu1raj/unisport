@@ -17,7 +17,7 @@ class TournamentCard extends StatelessWidget {
     final screenHeight = MediaQuery.of(context).size.height;
 
     String dateFormatter(DateTime date) {
-      final formatter = DateFormat.yMMMMEEEEd();
+      final formatter = DateFormat.yMMMd();
       return formatter.format(date);
     }
 
@@ -27,19 +27,20 @@ class TournamentCard extends StatelessWidget {
           isScrollControlled: true,
           constraints: BoxConstraints(
             minWidth: screenWidth,
-            maxHeight: screenHeight * 0.68,
+            minHeight: screenHeight * 0.3,
           ),
           context: context,
-          builder: (ctx) => TournamentDetailsScreen(tournament: tournament));
+          builder: (ctx) =>
+              SafeArea(child: TournamentDetailsScreen(tournament: tournament)));
     }
 
     return Card(
       color: Theme.of(context).colorScheme.primaryContainer,
       clipBehavior: Clip.hardEdge,
       child: Padding(
-        padding: const EdgeInsets.symmetric(vertical: 15, horizontal: 8),
+        padding: const EdgeInsets.symmetric(vertical: 14, horizontal: 12),
         child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceAround,
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Column(
@@ -84,9 +85,6 @@ class TournamentCard extends StatelessWidget {
                       ),
                 )
               ],
-            ),
-            const SizedBox(
-              width: 10,
             ),
             Column(
               crossAxisAlignment: CrossAxisAlignment.start,

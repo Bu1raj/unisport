@@ -124,14 +124,14 @@ class _TournamentDetailsWidgetState extends State<TournamentDetailsWidget> {
                     'Start Date',
                     style: Theme.of(context)
                         .textTheme
-                        .bodyMedium!
+                        .bodySmall!
                         .copyWith(color: Colors.white),
                   ),
                   Text(
                     DateFormat.yMMMEd().format(
                       widget.tournament.regStartDate.toDate(),
                     ),
-                    style: Theme.of(context).textTheme.bodyLarge!.copyWith(
+                    style: Theme.of(context).textTheme.bodyMedium!.copyWith(
                           color: Colors.white,
                         ),
                     maxLines: 1,
@@ -140,8 +140,14 @@ class _TournamentDetailsWidgetState extends State<TournamentDetailsWidget> {
                 ],
               ),
             ),
-            const SizedBox(
-              width: 10,
+            Flexible(
+              child: ConstrainedBox(
+                constraints: const BoxConstraints(
+                  minWidth: 15,
+                  maxWidth: 30,
+                ),
+                child: const SizedBox(),
+              ),
             ),
             CustomContainerOne(
               content: Column(
@@ -150,14 +156,14 @@ class _TournamentDetailsWidgetState extends State<TournamentDetailsWidget> {
                     'End Date',
                     style: Theme.of(context)
                         .textTheme
-                        .bodyMedium!
+                        .bodySmall!
                         .copyWith(color: Colors.white),
                   ),
                   Text(
                     DateFormat.yMMMEd().format(
                       widget.tournament.regEndDate.toDate(),
                     ),
-                    style: Theme.of(context).textTheme.bodyLarge!.copyWith(
+                    style: Theme.of(context).textTheme.bodyMedium!.copyWith(
                           color: Colors.white,
                         ),
                     maxLines: 1,

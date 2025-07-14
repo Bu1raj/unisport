@@ -517,7 +517,7 @@ class _ManagementScreenState extends ConsumerState<ManagementScreen> {
                             ref
                                 .read(mainInventorySearchQueryProvider.notifier)
                                 .update((state) => '');
-      
+
                             //clear filters
                             _selectedFilter = 'all';
                             ref
@@ -556,8 +556,9 @@ class _ManagementScreenState extends ConsumerState<ManagementScreen> {
                             //padding: EdgeInsets.only(left: 30),
                             decoration: BoxDecoration(
                               borderRadius: BorderRadius.circular(8),
-                              color:
-                                  Theme.of(context).colorScheme.primaryContainer,
+                              color: Theme.of(context)
+                                  .colorScheme
+                                  .primaryContainer,
                             ),
                             child: Column(
                               mainAxisAlignment: MainAxisAlignment.center,
@@ -578,8 +579,9 @@ class _ManagementScreenState extends ConsumerState<ManagementScreen> {
                           Container(
                             decoration: BoxDecoration(
                               borderRadius: BorderRadius.circular(8),
-                              color:
-                                  Theme.of(context).colorScheme.primaryContainer,
+                              color: Theme.of(context)
+                                  .colorScheme
+                                  .primaryContainer,
                             ),
                             child: Column(
                               mainAxisAlignment: MainAxisAlignment.center,
@@ -608,8 +610,9 @@ class _ManagementScreenState extends ConsumerState<ManagementScreen> {
                           Container(
                             decoration: BoxDecoration(
                               borderRadius: BorderRadius.circular(8),
-                              color:
-                                  Theme.of(context).colorScheme.primaryContainer,
+                              color: Theme.of(context)
+                                  .colorScheme
+                                  .primaryContainer,
                             ),
                             child: Stack(
                               children: [
@@ -654,8 +657,9 @@ class _ManagementScreenState extends ConsumerState<ManagementScreen> {
                           Container(
                             decoration: BoxDecoration(
                               borderRadius: BorderRadius.circular(8),
-                              color:
-                                  Theme.of(context).colorScheme.primaryContainer,
+                              color: Theme.of(context)
+                                  .colorScheme
+                                  .primaryContainer,
                             ),
                             child: Column(
                               mainAxisAlignment: MainAxisAlignment.center,
@@ -789,21 +793,24 @@ class _ManagementScreenState extends ConsumerState<ManagementScreen> {
                                 padding: const EdgeInsets.symmetric(
                                     vertical: 5, horizontal: 15),
                                 child: TextField(
+                                  textAlignVertical: TextAlignVertical.center,
                                   autofocus: true,
                                   scrollPadding: EdgeInsets.only(
-                                    bottom:
-                                        MediaQuery.of(context).viewInsets.bottom,
+                                    bottom: MediaQuery.of(context)
+                                            .viewInsets
+                                            .bottom *
+                                        0.5,
                                   ),
                                   decoration: InputDecoration(
-                                    isDense: true,
                                     hintText: 'Search an ID',
                                     suffixIcon: IconButton(
                                       onPressed: () {
                                         _searchController.clear();
-      
+
                                         ref
-                                            .read(mainInventorySearchQueryProvider
-                                                .notifier)
+                                            .read(
+                                                mainInventorySearchQueryProvider
+                                                    .notifier)
                                             .update((state) => '');
                                       },
                                       iconSize: 20,
@@ -907,14 +914,17 @@ class _ManagementScreenState extends ConsumerState<ManagementScreen> {
                     color: Theme.of(context).colorScheme.primaryContainer,
                   ),
                   child: Padding(
-                    padding:
-                        const EdgeInsets.symmetric(vertical: 10, horizontal: 15),
+                    padding: const EdgeInsets.symmetric(
+                        vertical: 10, horizontal: 15),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
                           'Add new stock',
-                          style: Theme.of(context).textTheme.bodyLarge!.copyWith(
+                          style: Theme.of(context)
+                              .textTheme
+                              .bodyLarge!
+                              .copyWith(
                                 fontSize: 20,
                                 color: Theme.of(context).colorScheme.primary,
                               ),
@@ -987,7 +997,8 @@ class _ManagementScreenState extends ConsumerState<ManagementScreen> {
                                   _isAddingNewItems = false;
                                   _quantityController.clear();
                                   _scrollController.animateTo(0,
-                                      duration: const Duration(milliseconds: 700),
+                                      duration:
+                                          const Duration(milliseconds: 700),
                                       curve: Curves.easeInOut);
                                 });
                               },

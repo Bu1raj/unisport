@@ -83,7 +83,7 @@ class _TournamentDateWidgetState extends State<TournamentDateWidget> {
               content: Text(
                 _selectedStartDate == null
                     ? 'No date selected'
-                    : DateFormat.yMMMMEEEEd().format(_selectedStartDate!),
+                    : DateFormat('EEE, MMM d, y').format(_selectedStartDate!),
                 style: Theme.of(context).textTheme.bodyLarge!.copyWith(
                       fontSize: 15,
                     ),
@@ -104,16 +104,13 @@ class _TournamentDateWidgetState extends State<TournamentDateWidget> {
               ),
         ),
         const SizedBox(height: 10),
-        GridView.count(
-          physics: const NeverScrollableScrollPhysics(),
-          shrinkWrap: true,
-          crossAxisCount: 2,
-          crossAxisSpacing: 10,
-          mainAxisSpacing: 10,
-          childAspectRatio: 2,
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             CustomContainer2(
               content: Column(
+                mainAxisSize: MainAxisSize.min,
                 children: [
                   Text(
                     'Start date',
@@ -137,6 +134,7 @@ class _TournamentDateWidgetState extends State<TournamentDateWidget> {
             ),
             CustomContainer2(
               content: Column(
+                mainAxisSize: MainAxisSize.min,
                 children: [
                   Text(
                     'End date',
@@ -167,7 +165,7 @@ class _TournamentDateWidgetState extends State<TournamentDateWidget> {
 }
 
 //const SizedBox(height: 10),
-        /*Row(
+/*Row(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Icon(
