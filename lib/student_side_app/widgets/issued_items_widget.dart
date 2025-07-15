@@ -36,77 +36,77 @@ class _IssuedItemsWidgetState extends State<IssuedItemsWidget> {
     return now.isAfter(deadline);
   }
 
-  @override
-  Widget build(BuildContext context) {
-    Widget deadlineBox(DateTime deadline) {
-      return Container(
-        padding: EdgeInsets.all(8),
-        decoration: BoxDecoration(
-          color: Theme.of(context).colorScheme.primaryContainer,
-          borderRadius: BorderRadius.circular(7),
-        ),
-        child: Column(
-          children: [
-            if (_isDeadlineCrossed(deadline))
-              Row(
-                children: [
-                  const Icon(
-                    Icons.warning,
-                    color: Colors.red,
-                  ),
-                  const SizedBox(width: 10),
-                  Text(
-                    'You have crossed the deadline',
-                    style: Theme.of(context).textTheme.titleMedium!.copyWith(
-                          color: Colors.red,
-                          fontWeight: FontWeight.bold,
-                        ),
-                  ),
-                ],
-              ),
-            if (!_isDeadlineCrossed(deadline))
-              Row(
-                children: [
-                  const Icon(
-                    Icons.check_circle_outline_outlined,
-                    color: Colors.green,
-                  ),
-                  const SizedBox(width: 10),
-                  Text(
-                    'You are within deadline',
-                    style: Theme.of(context).textTheme.titleMedium!.copyWith(
-                          color: Colors.green,
-                          fontWeight: FontWeight.bold,
-                        ),
-                  ),
-                ],
-              ),
-            const SizedBox(height: 10),
+  Widget _buildDeadlineBox(BuildContext context, DateTime deadline) {
+    return Container(
+      padding: EdgeInsets.all(8),
+      decoration: BoxDecoration(
+        color: Theme.of(context).colorScheme.primaryContainer,
+        borderRadius: BorderRadius.circular(7),
+      ),
+      child: Column(
+        children: [
+          if (_isDeadlineCrossed(deadline))
             Row(
-              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 const Icon(
-                  Icons.info_outline,
-                  color: Colors.black,
-                  size: 17,
+                  Icons.warning,
+                  color: Colors.red,
                 ),
-                const SizedBox(width: 5),
-                Expanded(
-                  child: Text(
-                    'Please return the equipments before the deadline',
-                    style: Theme.of(context).textTheme.bodySmall,
-                    maxLines: 2,
-                    overflow: TextOverflow.ellipsis,
-                    softWrap: true,
-                  ),
+                const SizedBox(width: 10),
+                Text(
+                  'You have crossed the deadline',
+                  style: Theme.of(context).textTheme.titleMedium!.copyWith(
+                        color: Colors.red,
+                        fontWeight: FontWeight.bold,
+                      ),
                 ),
               ],
             ),
-          ],
-        ),
-      );
-    }
+          if (!_isDeadlineCrossed(deadline))
+            Row(
+              children: [
+                const Icon(
+                  Icons.check_circle_outline_outlined,
+                  color: Colors.green,
+                ),
+                const SizedBox(width: 10),
+                Text(
+                  'You are within deadline',
+                  style: Theme.of(context).textTheme.titleMedium!.copyWith(
+                        color: Colors.green,
+                        fontWeight: FontWeight.bold,
+                      ),
+                ),
+              ],
+            ),
+          const SizedBox(height: 10),
+          Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              const Icon(
+                Icons.info_outline,
+                color: Colors.black,
+                size: 17,
+              ),
+              const SizedBox(width: 5),
+              Expanded(
+                child: Text(
+                  'Please return the items before the deadline',
+                  style: Theme.of(context).textTheme.bodySmall,
+                  maxLines: 2,
+                  overflow: TextOverflow.ellipsis,
+                  softWrap: true,
+                ),
+              ),
+            ],
+          ),
+        ],
+      ),
+    );
+  }
 
+  @override
+  Widget build(BuildContext context) {
     return Container(
       clipBehavior: Clip.none,
       margin: const EdgeInsets.only(top: 20),
@@ -208,28 +208,8 @@ class _IssuedItemsWidgetState extends State<IssuedItemsWidget> {
                           ),
                         ],
                       ),
-                      if (_isDeadlineCrossed(deadline))
-                        Row(
-                          children: [
-                            const Icon(
-                              Icons.warning,
-                              color: Colors.red,
-                            ),
-                            const SizedBox(width: 10),
-                            Text(
-                              'You have crossed the deadline',
-                              style: Theme.of(context)
-                                  .textTheme
-                                  .titleMedium!
-                                  .copyWith(
-                                    color: Colors.red,
-                                    fontWeight: FontWeight.bold,
-                                  ),
-                            ),
-                          ],
-                        ),
                       const SizedBox(height: 10),
-                      deadlineBox(deadline)
+                      _buildDeadlineBox(context, deadline)
                     ],
                   );
                 } else {
