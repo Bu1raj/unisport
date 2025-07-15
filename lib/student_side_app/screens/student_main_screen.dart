@@ -45,6 +45,7 @@ class _StudentMainScreenState extends ConsumerState<StudentMainScreen> {
   @override
   Widget build(BuildContext context) {
     final studentDetails = ref.watch(studentDetailsProvider);
+    final screenWidth = MediaQuery.of(context).size.width;
 
     return studentDetails == null
         ? const Scaffold(
@@ -53,31 +54,33 @@ class _StudentMainScreenState extends ConsumerState<StudentMainScreen> {
             ),
           )
         : SafeArea(
-          child: Scaffold(
+            child: Scaffold(
               appBar: AppBar(
                 title: Text('Hi, ${studentDetails.name}'),
                 toolbarHeight: 75,
               ),
               drawer: StudentMainDrawer(studentDetails: studentDetails),
-              body: Padding(
-                padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 15),
-                child: SingleChildScrollView(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      IssuedItemsWidget(studentDetails: studentDetails),
-                      const SizedBox(height: 20),
-                      ArenaBookingWidget(
-                        studentUsn: studentDetails.usn,
-                      ),
-                      const SizedBox(height: 20),
-                      const AvailableTournamentsList(),
-                      const SizedBox(height: 20),
-                    ],
+              body: SingleChildScrollView(
+                child: Center(
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 20.0),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        IssuedItemsWidget(studentDetails: studentDetails),
+                        const SizedBox(height: 20),
+                        ArenaBookingWidget(
+                          studentUsn: studentDetails.usn,
+                        ),
+                        const SizedBox(height: 20),
+                        const AvailableTournamentsList(),
+                        const SizedBox(height: 20),
+                      ],
+                    ),
                   ),
                 ),
               ),
             ),
-        );
+          );
   }
 }

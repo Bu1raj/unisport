@@ -52,7 +52,7 @@ class _AvailableTournamentsListState
         borderRadius: BorderRadius.circular(20),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withOpacity(0.5),
+            color: Colors.grey.withOpacity(0.5),
             blurRadius: 3,
             //offset: const Offset(0.4, 0.4),
           ),
