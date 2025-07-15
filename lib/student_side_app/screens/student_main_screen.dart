@@ -45,7 +45,6 @@ class _StudentMainScreenState extends ConsumerState<StudentMainScreen> {
   @override
   Widget build(BuildContext context) {
     final studentDetails = ref.watch(studentDetailsProvider);
-    final screenWidth = MediaQuery.of(context).size.width;
 
     return studentDetails == null
         ? const Scaffold(
