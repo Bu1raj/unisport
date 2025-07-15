@@ -2,6 +2,8 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:intl/intl.dart';
+import 'package:sports_complex_ms/common_widgets/issued_items_table_widget.dart';
+import 'package:sports_complex_ms/common_widgets/time_container_widget.dart';
 import 'package:sports_complex_ms/staff_side_app/models/issue_return_section/issued_equipments.dart';
 import 'package:sports_complex_ms/staff_side_app/models/student.dart';
 import 'package:sports_complex_ms/staff_side_app/providers/issued_items_provider.dart';
@@ -89,84 +91,6 @@ class _ReturnScreenOverlayState extends ConsumerState<ReturnScreenOverlay> {
 
     bool deadLineCrossed = DateTime.now().isAfter(deadline);
 
-    Widget buildCell(String text, {bool isHeader = false, isLast = false}) {
-      return Container(
-        padding: const EdgeInsets.all(8),
-        decoration: BoxDecoration(
-          border: !isLast
-              ? Border(
-                  bottom: BorderSide(color: Colors.grey, width: 0.5),
-                )
-              : null,
-        ),
-        child: Text(
-          text,
-          style: isHeader ? const TextStyle(fontWeight: FontWeight.bold) : null,
-        ),
-      );
-    }
-
-    Widget issuedEquipmentsTable(Map<String, String> equipmentNames) {
-      final entries = equipmentNames.entries.toList();
-      return Container(
-        padding: const EdgeInsets.all(0),
-        decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(7),
-            border: Border.all(
-              color: Colors.grey,
-              width: 0.5,
-            )),
-        child: Table(
-          columnWidths: const {
-            0: FlexColumnWidth(1),
-            1: FlexColumnWidth(1),
-          },
-          defaultVerticalAlignment: TableCellVerticalAlignment.middle,
-          children: <TableRow>[
-            // table heading
-            TableRow(
-              children: [
-                buildCell('Equipment', isHeader: true),
-                buildCell('ID', isHeader: true),
-              ],
-            ),
-            for (int i = 0; i < entries.length; i++)
-              TableRow(
-                children: [
-                  buildCell(entries[i].value, isLast: i == entries.length - 1),
-                  buildCell(entries[i].key, isLast: i == entries.length - 1),
-                ],
-              ),
-          ],
-        ),
-      );
-    }
-
-    Widget timeContainer(String text, DateTime time) {
-      return Container(
-        padding: const EdgeInsets.all(8),
-        decoration: BoxDecoration(
-          color: Theme.of(context).colorScheme.primaryContainer,
-          borderRadius: BorderRadius.circular(7),
-        ),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(text,
-                style: TextStyle(
-                  fontWeight: FontWeight.bold,
-                )),
-            const SizedBox(height: 5),
-            Text(dateTimeFormatter(time),
-                style: TextStyle(
-                  fontSize: 13,
-                  fontStyle: FontStyle.italic,
-                )),
-          ],
-        ),
-      );
-    }
-
     return LayoutBuilder(
       builder: (context, constraints) {
         return Padding(
@@ -178,12 +102,12 @@ class _ReturnScreenOverlayState extends ConsumerState<ReturnScreenOverlay> {
           ),
           child: _isLoading
               ? SizedBox(
-                height: constraints.minHeight,
-                width: constraints.minWidth,
-                child: const Center(
+                  height: constraints.minHeight,
+                  width: constraints.minWidth,
+                  child: const Center(
                     child: CircularProgressIndicator(),
                   ),
-              )
+                )
               : Column(
                   mainAxisSize: MainAxisSize.min,
                   children: [
@@ -275,20 +199,23 @@ class _ReturnScreenOverlayState extends ConsumerState<ReturnScreenOverlay> {
                                     )),
                           ]),
                     ),
-                    issuedEquipmentsTable(equipmentNames),
+                    IssuedItemsTableWidget(
+                      equipmentsMap: equipmentNames,
+                    ),
                     const SizedBox(height: 5),
                     Row(
                       children: [
                         Expanded(
-                            child: timeContainer(
-                          'Issued Time',
-                          widget.issuedEquipmentsReturnData.issuedTime.toDate(),
+                            child: TimeContainer(
+                          text: 'Issued Time',
+                          time: widget.issuedEquipmentsReturnData.issuedTime
+                              .toDate(),
                         )),
                         const SizedBox(width: 5),
                         Expanded(
-                            child: timeContainer(
-                          'Deadline',
-                          deadline,
+                            child: TimeContainer(
+                          text: 'Deadline',
+                          time: deadline,
                         )),
                       ],
                     ),

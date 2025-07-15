@@ -1,7 +1,8 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'package:sports_complex_ms/custom/widgets/custom_container_1.dart';
+import 'package:sports_complex_ms/common_widgets/issued_items_table_widget.dart';
+import 'package:sports_complex_ms/common_widgets/time_container_widget.dart';
 import 'package:sports_complex_ms/staff_side_app/models/student.dart';
 import 'package:sports_complex_ms/student_side_app/services/issued_items_services.dart';
 
@@ -35,14 +36,80 @@ class _IssuedItemsWidgetState extends State<IssuedItemsWidget> {
     return now.isAfter(deadline);
   }
 
+  Widget _buildDeadlineBox(BuildContext context, DateTime deadline) {
+    return Container(
+      padding: EdgeInsets.all(8),
+      decoration: BoxDecoration(
+        color: Theme.of(context).colorScheme.primaryContainer,
+        borderRadius: BorderRadius.circular(7),
+      ),
+      child: Column(
+        children: [
+          if (_isDeadlineCrossed(deadline))
+            Row(
+              children: [
+                const Icon(
+                  Icons.warning,
+                  color: Colors.red,
+                ),
+                const SizedBox(width: 10),
+                Text(
+                  'You have crossed the deadline',
+                  style: Theme.of(context).textTheme.titleMedium!.copyWith(
+                        color: Colors.red,
+                        fontWeight: FontWeight.bold,
+                      ),
+                ),
+              ],
+            ),
+          if (!_isDeadlineCrossed(deadline))
+            Row(
+              children: [
+                const Icon(
+                  Icons.check_circle_outline_outlined,
+                  color: Colors.green,
+                ),
+                const SizedBox(width: 10),
+                Text(
+                  'You are within deadline',
+                  style: Theme.of(context).textTheme.titleMedium!.copyWith(
+                        color: Colors.green,
+                        fontWeight: FontWeight.bold,
+                      ),
+                ),
+              ],
+            ),
+          const SizedBox(height: 10),
+          Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              const Icon(
+                Icons.info_outline,
+                color: Colors.black,
+                size: 17,
+              ),
+              const SizedBox(width: 5),
+              Expanded(
+                child: Text(
+                  'Please return the items before the deadline',
+                  style: Theme.of(context).textTheme.bodySmall,
+                  maxLines: 2,
+                  overflow: TextOverflow.ellipsis,
+                  softWrap: true,
+                ),
+              ),
+            ],
+          ),
+        ],
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 15),
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(16.0),
-        color: Theme.of(context).colorScheme.primaryContainer,
-      ),
+      clipBehavior: Clip.none,
+      margin: const EdgeInsets.only(top: 20),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -55,8 +122,7 @@ class _IssuedItemsWidgetState extends State<IssuedItemsWidget> {
           ),
           const Divider(
             color: Colors.black38,
-            height: 30,
-            endIndent: 7,
+            height: 20,
             thickness: 0.5,
           ),
           StreamBuilder(
@@ -83,10 +149,8 @@ class _IssuedItemsWidgetState extends State<IssuedItemsWidget> {
                       Row(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          CustomContainerOne(
-                            width: 165,
-                            height: 165,
-                            content: FutureBuilder(
+                          Expanded(
+                            child: FutureBuilder(
                               future: loadEquipmentNames(eqpIds),
                               builder: (BuildContext context,
                                   AsyncSnapshot snapshot) {
@@ -100,172 +164,52 @@ class _IssuedItemsWidgetState extends State<IssuedItemsWidget> {
                                 } else if (snapshot.hasError) {
                                   return Text('Error: ${snapshot.error}');
                                 } else {
-                                  return SingleChildScrollView(
-                                    scrollDirection: Axis.horizontal,
-                                    child: SingleChildScrollView(
-                                      scrollDirection: Axis.vertical,
-                                      child: Column(
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.start,
-                                        children: [
-                                          Text(
-                                            '${details['sport']}'.toUpperCase(),
-                                            style: Theme.of(context)
-                                                .textTheme
-                                                .bodyLarge!
-                                                .copyWith(
-                                                  color: Colors.white,
-                                                ),
-                                          ),
-                                          const SizedBox(height: 5),
-                                          Text(
-                                            'Equipments',
-                                            style: Theme.of(context)
-                                                .textTheme
-                                                .bodyLarge!
-                                                .copyWith(
-                                                  color: Colors.white,
-                                                ),
-                                          ),
-                                          const SizedBox(height: 3),
-                                          for (final e
-                                              in eqpNamesIdsMap.entries)
-                                            Text('${e.value} - ${e.key}',
-                                                style: Theme.of(context)
-                                                    .textTheme
-                                                    .bodyMedium!
-                                                    .copyWith(
-                                                      color: Colors.white,
-                                                    )),
-                                        ],
+                                  return Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      Text(
+                                        'SPORT: ${details['sport']}'
+                                            .toUpperCase(),
+                                        style: Theme.of(context)
+                                            .textTheme
+                                            .bodyLarge!
+                                            .copyWith(
+                                              color: Theme.of(context)
+                                                  .colorScheme
+                                                  .primary,
+                                            ),
                                       ),
-                                    ),
+                                      const SizedBox(height: 5),
+                                      IssuedItemsTableWidget(
+                                          equipmentsMap: eqpNamesIdsMap),
+                                    ],
                                   );
                                 }
                               },
                             ),
                           ),
-                          const Spacer(),
-                          Column(
+                        ],
+                      ),
+                      SizedBox(height: 10),
+                      Row(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Wrap(
+                            spacing: 15,
+                            runSpacing: 10,
                             children: [
-                              CustomContainerOne(
-                                content: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Text(
-                                      'Issued on',
-                                      style: Theme.of(context)
-                                          .textTheme
-                                          .bodyLarge!
-                                          .copyWith(
-                                            color: Colors.white,
-                                          ),
-                                    ),
-                                    Text(
-                                      dateTimeFormatter(
-                                        details['issuedTime'].toDate(),
-                                      ),
-                                      style: Theme.of(context)
-                                          .textTheme
-                                          .bodyMedium!
-                                          .copyWith(
-                                            color: Colors.white,
-                                          ),
-                                    ),
-                                  ],
-                                ),
+                              TimeContainer(
+                                text: 'Issued on',
+                                time: details['issuedTime'].toDate(),
                               ),
-                              const SizedBox(height: 10),
-                              CustomContainerOne(
-                                content: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Text(
-                                      'Deadline',
-                                      style: Theme.of(context)
-                                          .textTheme
-                                          .bodyLarge!
-                                          .copyWith(
-                                            color: Colors.white,
-                                          ),
-                                    ),
-                                    Text(
-                                      dateTimeFormatter(deadline),
-                                      style: Theme.of(context)
-                                          .textTheme
-                                          .bodyMedium!
-                                          .copyWith(
-                                            color: Colors.white,
-                                          ),
-                                    ),
-                                  ],
-                                ),
-                              ),
+                              TimeContainer(text: 'Deadline', time: deadline),
                             ],
                           ),
                         ],
                       ),
-                      const Divider(
-                        color: Colors.black38,
-                        height: 30,
-                        endIndent: 7,
-                        thickness: 0.5,
-                      ),
-                      if (_isDeadlineCrossed(deadline))
-                        Row(
-                          children: [
-                            const Icon(
-                              Icons.warning,
-                              color: Colors.red,
-                            ),
-                            const SizedBox(width: 10),
-                            Text(
-                              'You have crossed the deadline',
-                              style: Theme.of(context)
-                                  .textTheme
-                                  .titleMedium!
-                                  .copyWith(
-                                    color: Colors.red,
-                                    fontWeight: FontWeight.bold,
-                                  ),
-                            ),
-                          ],
-                        ),
-                      if (!_isDeadlineCrossed(deadline))
-                        Row(
-                          children: [
-                            const Icon(
-                              Icons.check_circle_outline_outlined,
-                              color: Colors.green,
-                            ),
-                            const SizedBox(width: 10),
-                            Text(
-                              'You are within deadline',
-                              style: Theme.of(context)
-                                  .textTheme
-                                  .titleMedium!
-                                  .copyWith(
-                                    color: Colors.green,
-                                    fontWeight: FontWeight.bold,
-                                  ),
-                            ),
-                          ],
-                        ),
                       const SizedBox(height: 10),
-                      Row(
-                        children: [
-                          const Icon(
-                            Icons.info_outline,
-                            color: Colors.black,
-                            size: 17,
-                          ),
-                          const SizedBox(width: 5),
-                          Text(
-                            'Please return the equipments before the deadline',
-                            style: Theme.of(context).textTheme.bodySmall,
-                          ),
-                        ],
-                      ),
+                      _buildDeadlineBox(context, deadline)
                     ],
                   );
                 } else {
