@@ -8,8 +8,9 @@ class TimeContainer extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    String dateTimeFormatter(DateTime time) {
-      final dateTimeFormatter = DateFormat.Hm().add_yMMMd();
+    static final DateFormat dateTimeFormatter = DateFormat.Hm().add_yMMMd();
+
+    String formatDateTime(DateTime time) {
       return dateTimeFormatter.format(time);
     }
 
