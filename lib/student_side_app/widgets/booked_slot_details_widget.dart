@@ -33,69 +33,91 @@ class _BookedSlotDetailsWidgetState extends State<BookedSlotDetailsWidget> {
 
   @override
   Widget build(BuildContext context) {
-    return Card(
-      elevation: 5,
-      color: Theme.of(context).colorScheme.primaryContainer,
-      child: Padding(
-        padding: const EdgeInsets.all(20),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(
-              'Booking Details',
-              style: Theme.of(context).textTheme.titleLarge!.copyWith(
-                    color: Theme.of(context).colorScheme.tertiary,
-                  ),
-            ),
-            const Divider(
-              color: Colors.black38,
-              height: 20,
-              endIndent: 7,
-              thickness: 0.5,
-            ),
-            Row(
-              children: [
-                const Icon(Icons.stadium),
-                const SizedBox(width: 10),
-                Text(
-                  'Arena ID - ${widget.bookedSlotDetails['arenaId']}',
-                  style: Theme.of(context).textTheme.bodyLarge,
-                ),
-              ],
-            ),
-            const SizedBox(height: 10),
-            Text(
-              'Slot Number - ${widget.bookedSlotDetails['slotNo']!.substring(widget.bookedSlotDetails['slotNo']!.length - 1)}',
-              style: Theme.of(context).textTheme.bodyLarge,
-            ),
-            const SizedBox(height: 10),
-            Row(
-              children: [
-                const Icon(Icons.hourglass_bottom_outlined),
-                const SizedBox(width: 10),
-                Text(
-                  'Slot Timings - ${widget.bookedSlotDetails['slotStartTime']} - ${widget.bookedSlotDetails['slotEndTime']}',
-                  style: Theme.of(context).textTheme.bodyLarge,
-                ),
-              ],
-            ),
-            const SizedBox(height: 10),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.end,
-              children: [
-                TextButton(
-                  onPressed: () {
-                    widget.onBookingCancelled();
-                  },
-                  child: const Text(
-                    'Cancel Booking',
-                  ),
-                ),
-              ],
-            ),
-          ],
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(
+          'Booking Details',
+          style: Theme.of(context).textTheme.titleLarge!.copyWith(
+                color: Theme.of(context).colorScheme.tertiary,
+              ),
         ),
-      ),
+        const Divider(
+          color: Colors.black38,
+          height: 20,
+          endIndent: 7,
+          thickness: 0.5,
+        ),
+        Container(
+          padding: const EdgeInsets.all(16.0),
+          decoration: BoxDecoration(
+            color: Theme.of(context).colorScheme.primaryContainer,
+            borderRadius: BorderRadius.circular(7),
+            boxShadow: [
+              BoxShadow(
+                color: Colors.black.withValues(alpha: 0.1), // subtle shadow
+                blurRadius: 1.0, // soft blur
+                offset: Offset(0, 1), // slight downward shift
+              ),
+            ],
+          ),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Row(
+                    children: [
+                      const Icon(Icons.stadium),
+                      const SizedBox(width: 5.0),
+                      Text(
+                        '${widget.bookedSlotDetails['arenaId']}',
+                        style: Theme.of(context).textTheme.bodyMedium,
+                      ),
+                    ],
+                  ),
+                  Text(
+                    'Slot Number - ${widget.bookedSlotDetails['slotNo']!.substring(widget.bookedSlotDetails['slotNo']!.length - 1)}',
+                    style: Theme.of(context).textTheme.bodyMedium,
+                  ),
+                ],
+              ),
+              const SizedBox(height: 10),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Row(
+                    children: [
+                      const Icon(Icons.hourglass_bottom_outlined),
+                      const SizedBox(width: 5.0),
+                      Text(
+                        '${widget.bookedSlotDetails['slotStartTime']} - ${widget.bookedSlotDetails['slotEndTime']}',
+                        style: Theme.of(context).textTheme.bodyMedium,
+                      ),
+                    ],
+                  ),
+                  TextButton(
+                    onPressed: () {
+                      widget.onBookingCancelled();
+                    },
+                    style: TextButton.styleFrom(
+                      padding: EdgeInsets.zero,
+                      minimumSize: Size.zero,
+                      tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                      visualDensity: VisualDensity.compact,
+                    ),
+                    child: const Text(
+                      'Cancel Booking',
+                    ),
+                  ),
+                ],
+              ),
+            ],
+          ),
+        ),
+      ],
     );
   }
 }

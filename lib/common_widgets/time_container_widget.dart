@@ -8,7 +8,7 @@ class TimeContainer extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    static final DateFormat dateTimeFormatter = DateFormat.Hm().add_yMMMd();
+    final DateFormat dateTimeFormatter = DateFormat.Hm().add_yMMMd();
 
     String formatDateTime(DateTime time) {
       return dateTimeFormatter.format(time);
@@ -19,6 +19,13 @@ class TimeContainer extends StatelessWidget {
       decoration: BoxDecoration(
         color: Theme.of(context).colorScheme.primaryContainer,
         borderRadius: BorderRadius.circular(7),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withValues(alpha: 0.1), // subtle shadow
+            blurRadius: 1.0, // soft blur
+            offset: Offset(0, 1), // slight downward shift
+          ),
+        ],
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -28,7 +35,7 @@ class TimeContainer extends StatelessWidget {
                 fontWeight: FontWeight.bold,
               )),
           const SizedBox(height: 5),
-          Text(dateTimeFormatter(time),
+          Text(formatDateTime(time),
               style: TextStyle(
                 fontSize: 13,
                 fontStyle: FontStyle.italic,

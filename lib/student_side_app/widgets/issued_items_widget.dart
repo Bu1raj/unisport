@@ -42,6 +42,13 @@ class _IssuedItemsWidgetState extends State<IssuedItemsWidget> {
       decoration: BoxDecoration(
         color: Theme.of(context).colorScheme.primaryContainer,
         borderRadius: BorderRadius.circular(7),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withValues(alpha: 0.1), // subtle shadow
+            blurRadius: 1.0, // soft blur
+            offset: Offset(0, 1), // slight downward shift
+          ),
+        ],
       ),
       child: Column(
         children: [
@@ -196,7 +203,7 @@ class _IssuedItemsWidgetState extends State<IssuedItemsWidget> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Wrap(
-                            spacing: 15,
+                            spacing: 10,
                             runSpacing: 10,
                             children: [
                               TimeContainer(
