@@ -44,9 +44,9 @@ class _IssuedItemsWidgetState extends State<IssuedItemsWidget> {
         borderRadius: BorderRadius.circular(7),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withValues(alpha: 0.1), // subtle shadow
-            blurRadius: 1.0, // soft blur
-            offset: Offset(0, 1), // slight downward shift
+            color: Colors.black.withValues(alpha: 0.1),
+            blurRadius: 1.0,
+            offset: const Offset(0, 1),
           ),
         ],
       ),
@@ -176,11 +176,10 @@ class _IssuedItemsWidgetState extends State<IssuedItemsWidget> {
                                         CrossAxisAlignment.start,
                                     children: [
                                       Text(
-                                        'SPORT: ${details['sport']}'
-                                            .toUpperCase(),
+                                        'Sport: ${details['sport']}',
                                         style: Theme.of(context)
                                             .textTheme
-                                            .bodyLarge!
+                                            .bodyMedium!
                                             .copyWith(
                                               color: Theme.of(context)
                                                   .colorScheme

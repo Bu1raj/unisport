@@ -46,7 +46,7 @@ class ArenaTile extends StatelessWidget {
             ),
             InkWell(
               onTap: () async {
-                final res = await Navigator.of(context).push(
+                await Navigator.of(context).push(
                   MaterialPageRoute(
                     builder: (ctx) => SlotsDetailsScreen(
                       slotsDetails: slotDetails,
@@ -55,11 +55,6 @@ class ArenaTile extends StatelessWidget {
                     ),
                   ),
                 );
-                if (res == 1) {
-                  if (context.mounted) {
-                    Navigator.of(context).pop(1);
-                  }
-                }
               },
               splashColor: Colors.black12,
               borderRadius: BorderRadius.circular(16.0),

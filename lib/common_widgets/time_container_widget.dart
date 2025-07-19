@@ -21,9 +21,9 @@ class TimeContainer extends StatelessWidget {
         borderRadius: BorderRadius.circular(7),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withValues(alpha: 0.1), // subtle shadow
-            blurRadius: 1.0, // soft blur
-            offset: Offset(0, 1), // slight downward shift
+            color: Colors.black.withValues(alpha: 0.1),
+            blurRadius: 1.0,
+            offset: const Offset(0, 1),
           ),
         ],
       ),

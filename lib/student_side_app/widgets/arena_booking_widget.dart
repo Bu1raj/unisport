@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
-//import 'package:sports_complex_ms/staff_side_app/models/arena_management_section/arena.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:sports_complex_ms/student_side_app/models/arena_booking/booking_details.dart';
+import 'package:sports_complex_ms/student_side_app/providers/arena_details_provider.dart';
 import 'package:sports_complex_ms/student_side_app/screens/arena_booking_screen1.dart';
 import 'package:sports_complex_ms/student_side_app/services/arena_services.dart';
 import 'package:sports_complex_ms/student_side_app/widgets/booked_slot_details_widget.dart';
 
-class ArenaBookingWidget extends StatefulWidget {
+class ArenaBookingWidget extends ConsumerStatefulWidget {
   const ArenaBookingWidget({
     super.key,
     required this.studentUsn,
@@ -13,37 +15,22 @@ class ArenaBookingWidget extends StatefulWidget {
   final String studentUsn;
 
   @override
-  State<ArenaBookingWidget> createState() => _ArenaBookingWidgetState();
+  ConsumerState<ArenaBookingWidget> createState() => _ArenaBookingWidgetState();
 }
 
-class _ArenaBookingWidgetState extends State<ArenaBookingWidget> {
+class _ArenaBookingWidgetState extends ConsumerState<ArenaBookingWidget> {
   bool _isLoading = true;
   bool _toggle = false;
-  Map<String, String?>? bookingDetails;
   late List<String> _sportsList;
 
   Future<void> _loadDetails() async {
     final arenaServices = ArenaServices();
     _sportsList = await arenaServices.getSports();
-    checkUserHasBooked();
+    await ref
+        .read(bookedArenaDetailsProvider.notifier)
+        .fetchUserBookingDetails(widget.studentUsn);
     setState(() {
       _isLoading = false;
-    });
-  }
-
-  Future<void> checkUserHasBooked() async {
-    final res =
-        await ArenaServices().getDetailsOfBookedSlots(widget.studentUsn);
-    setState(() {
-      _isLoading = false;
-      bookingDetails = res;
-    });
-  }
-
-  Future<void> _cancelBooking() async {
-    await ArenaServices().cancelBooking(widget.studentUsn, context);
-    setState(() {
-      bookingDetails = null;
     });
   }
 
@@ -55,6 +42,8 @@ class _ArenaBookingWidgetState extends State<ArenaBookingWidget> {
 
   @override
   Widget build(BuildContext context) {
+    final BookingDetails? bookingDetails =
+        ref.watch(bookedArenaDetailsProvider);
     Widget content;
 
     content = const Center(
@@ -64,84 +53,119 @@ class _ArenaBookingWidgetState extends State<ArenaBookingWidget> {
     if (!_isLoading) {
       if (bookingDetails != null) {
         content = BookedSlotDetailsWidget(
-            onBookingCancelled: _cancelBooking,
-            usn: widget.studentUsn,
-            bookedSlotDetails: bookingDetails!);
-      } else if (bookingDetails == null || bookingDetails!.isEmpty) {
+            usn: widget.studentUsn, bookedSlotDetails: bookingDetails);
+      } else {
         content = Column(
+          crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            InkWell(
-              onTap: () {
-                setState(() {
-                  _toggle = !_toggle;
-                });
-              },
-              child: Container(
-                padding: const EdgeInsets.symmetric(
-                  vertical: 20,
-                  horizontal: 30,
-                ),
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(8.0),
-                  color: Theme.of(context).colorScheme.primaryContainer,
-                ),
-                child: Row(
-                  children: [
-                    Text(
-                      'Book Arena',
-                      style: Theme.of(context).textTheme.titleLarge!.copyWith(
-                            color: Theme.of(context).colorScheme.primary,
-                            fontWeight: FontWeight.w500,
-                          ),
-                    ),
-                    const Spacer(),
-                    Icon(
-                      _toggle
-                          ? Icons.keyboard_arrow_up
-                          : Icons.keyboard_arrow_down,
-                    ),
-                  ],
+            Padding(
+              padding: const EdgeInsets.symmetric(vertical: 10.0),
+              child: Text(
+                "You have not booked any arena yet",
+                style: TextStyle(
+                  color: Colors.grey,
+                  fontStyle: FontStyle.italic,
                 ),
               ),
             ),
-            if (_toggle)
-              SizedBox(
-                height: 300,
-                child: ListView.builder(
-                  itemCount: _sportsList.length,
-                  itemBuilder: (context, index) => ListTile(
-                    title: Text(
-                      _sportsList[index].toUpperCase(),
-                      style: Theme.of(context).textTheme.titleLarge!.copyWith(
-                            color: Theme.of(context).colorScheme.secondary,
-                            fontWeight: FontWeight.w500,
-                            fontSize: 20,
-                          ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.end,
+              children: [
+                TextButton.icon(
+                  style: TextButton.styleFrom(
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(7),
                     ),
-                    trailing: const Icon(Icons.arrow_forward_ios_rounded),
-                    onTap: () async {
-                      final res = await Navigator.of(context).push(
-                        MaterialPageRoute(
-                          builder: (ctx) => AvailableArenasScreen(
-                            sport: _sportsList[index],
-                          ),
-                        ),
-                      );
-
-                      if (res == 1) {
-                        setState(() {
-                          _isLoading = true;
-                          checkUserHasBooked();
-                        });
-                      }
-                    },
+                    padding:
+                        const EdgeInsets.symmetric(horizontal: 4, vertical: 4),
                   ),
+                  onPressed: () {
+                    setState(() {
+                      _toggle = !_toggle;
+                    });
+                  },
+                  icon: Icon(
+                    _toggle
+                        ? Icons.keyboard_arrow_up
+                        : Icons.keyboard_arrow_down,
+                  ),
+                  label: Text("Book Arena"),
                 ),
+                const SizedBox(width: 10),
+              ],
+            ),
+            if (_toggle)
+              GridView(
+                shrinkWrap: true,
+                physics: const NeverScrollableScrollPhysics(),
+                gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                  crossAxisCount: 2,
+                  childAspectRatio: 3,
+                  crossAxisSpacing: 10,
+                  mainAxisSpacing: 10,
+                ),
+                children: [
+                  for (final sport in _sportsList)
+                    InkWell(
+                      onTap: () {
+                        Navigator.of(context).push(
+                          MaterialPageRoute(
+                            builder: (context) => AvailableArenasScreen(
+                              sport: sport,
+                            ),
+                          ),
+                        );
+                        setState(() {
+                          _toggle = false;
+                        });
+                      },
+                      child: Container(
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: 12, vertical: 8),
+                        decoration: BoxDecoration(
+                          color: Theme.of(context).colorScheme.primaryContainer,
+                          borderRadius: BorderRadius.circular(7),
+                          boxShadow: [
+                            BoxShadow(
+                              color: Colors.black
+                                  .withValues(alpha: 0.1),
+                              blurRadius: 1.0,
+                              offset: const Offset(0, 1),
+                            ),
+                          ],
+                        ),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Text(sport),
+                            Icon(Icons.arrow_right_rounded),
+                          ],
+                        ),
+                      ),
+                    ),
+                ],
               ),
           ],
         );
       }
     }
-    return content;
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(
+          'Booking Details',
+          style: Theme.of(context).textTheme.titleLarge!.copyWith(
+                color: Theme.of(context).colorScheme.tertiary,
+              ),
+        ),
+        const Divider(
+          color: Colors.black38,
+          height: 20,
+          endIndent: 7,
+          thickness: 0.5,
+        ),
+        content,
+      ],
+    );
   }
 }

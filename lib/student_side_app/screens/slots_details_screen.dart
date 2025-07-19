@@ -18,6 +18,13 @@ class SlotsDetailsScreen extends StatefulWidget {
 }
 
 class _SlotsDetailsScreenState extends State<SlotsDetailsScreen> {
+  bool _isBooking = false;
+  void setIsBooking(bool isBooking) {
+    setState(() {
+      _isBooking = isBooking;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     final slotsList = widget.slotsDetails;
@@ -33,35 +40,47 @@ class _SlotsDetailsScreenState extends State<SlotsDetailsScreen> {
                 ),
           ),
         ),
-        body: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Image.asset(
-              'assets\\arena_images\\${widget.sport}.jpg',
-              width: double.infinity,
-              height: 300,
-              fit: BoxFit.cover,
-            ),
-            Padding(
-              padding: const EdgeInsets.only(top: 25, left: 15),
-              child: Text(
-                'Slots Details',
-                style: Theme.of(context).textTheme.titleLarge!.copyWith(
-                      color: Theme.of(context).colorScheme.tertiary,
-                    ),
-              ),
-            ),
-            Expanded(
-              child: ListView.builder(
-                itemCount: slotsList.length,
-                itemBuilder: (context, index) => SlotDetailsWidget(
-                  index: index,
-                  slotDetails: slotsList[index],
+        body: _isBooking
+            ? Center(
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    CircularProgressIndicator(),
+                    SizedBox(height: 20),
+                    Text('Booking your slot ...')
+                  ],
                 ),
+              )
+            : Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Image.asset(
+                    'assets\\arena_images\\${widget.sport}.jpg',
+                    width: double.infinity,
+                    height: 300,
+                    fit: BoxFit.cover,
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.only(top: 25, left: 15),
+                    child: Text(
+                      'Slots Details',
+                      style: Theme.of(context).textTheme.titleLarge!.copyWith(
+                            color: Theme.of(context).colorScheme.tertiary,
+                          ),
+                    ),
+                  ),
+                  Expanded(
+                    child: ListView.builder(
+                      itemCount: slotsList.length,
+                      itemBuilder: (context, index) => SlotDetailsWidget(
+                        index: index,
+                        slotDetails: slotsList[index],
+                        setIsBooking: setIsBooking,
+                      ),
+                    ),
+                  ),
+                ],
               ),
-            ),
-          ],
-        ),
       ),
     );
   }
