@@ -1,33 +1,58 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:sports_complex_ms/custom/widgets/custom_button_1.dart';
+import 'package:sports_complex_ms/student_side_app/providers/arena_details_provider.dart';
 import 'package:sports_complex_ms/student_side_app/providers/student_details_provider.dart';
-import 'package:sports_complex_ms/student_side_app/services/arena_services.dart';
 
 class SlotDetailsWidget extends ConsumerStatefulWidget {
   const SlotDetailsWidget({
     super.key,
     required this.slotDetails,
     required this.index,
+    required this.setIsBooking,
   });
 
   final Map<String, String?> slotDetails;
   final int index;
+  final Function(bool) setIsBooking;
 
   @override
   ConsumerState<SlotDetailsWidget> createState() => _SlotDetailsWidgetState();
 }
 
 class _SlotDetailsWidgetState extends ConsumerState<SlotDetailsWidget> {
-  Future<void> _bookSlot(BuildContext ctx) async {
-    final studentDetails = ref.read(studentDetailsProvider);
-    String usn = studentDetails!.usn;
+  Future<void> _bookSlot(BuildContext context) async {
+    final navigator = Navigator.of(context);
+    final scaffoldMessenger = ScaffoldMessenger.of(context);
+    widget.setIsBooking(true);
 
-    await ArenaServices().bookASlot(widget.slotDetails['slotNo']!,
-        widget.slotDetails['arenaId']!, usn, ctx);
+    try {
+      final studentDetails = ref.read(studentDetailsProvider);
+      String usn = studentDetails!.usn;
 
-    if (ctx.mounted) {
-      Navigator.of(ctx).pop(1);
+      await ref.read(bookedArenaDetailsProvider.notifier).bookASlot(
+            usn,
+            widget.slotDetails['arenaId']!,
+            widget.slotDetails['slotNo']!,
+          );
+
+      scaffoldMessenger.showSnackBar(
+        const SnackBar(
+          content: Text('Slot booked successfully!'),
+          duration: Duration(seconds: 1),
+        ),
+      );
+      await Future.delayed(const Duration(milliseconds: 500));
+
+      navigator.popUntil((route) => route.isFirst);
+    } catch (error) {
+      if (context.mounted) {
+        scaffoldMessenger.showSnackBar(
+          SnackBar(content: Text('Failed to book slot: $error')),
+        );
+      }
+    } finally {
+      widget.setIsBooking(false);
     }
   }
 
@@ -99,7 +124,7 @@ class _SlotDetailsWidgetState extends ConsumerState<SlotDetailsWidget> {
         child: Padding(
           padding: const EdgeInsets.fromLTRB(20, 15, 20, 15),
           child: Row(
-            mainAxisAlignment: MainAxisAlignment.start,
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Text(
                 'Slot ${widget.index + 1}',
@@ -109,7 +134,6 @@ class _SlotDetailsWidgetState extends ConsumerState<SlotDetailsWidget> {
                       fontWeight: FontWeight.bold,
                     ),
               ),
-              const SizedBox(width: 35),
               Row(
                 children: [
                   Icon(
@@ -140,7 +164,6 @@ class _SlotDetailsWidgetState extends ConsumerState<SlotDetailsWidget> {
                   ),
                 ],
               ),
-              const SizedBox(width: 40),
               widget.slotDetails['bookedBy'] == null
                   ? Row(
                       children: [
@@ -149,13 +172,13 @@ class _SlotDetailsWidgetState extends ConsumerState<SlotDetailsWidget> {
                           size: 30,
                           color: Colors.green.shade800,
                         ),
-                        Text(
-                          'Free',
-                          style:
-                              Theme.of(context).textTheme.bodyMedium!.copyWith(
-                                    color: Colors.green.shade800,
-                                  ),
-                        ),
+                        // Text(
+                        //   'Free',
+                        //   style:
+                        //       Theme.of(context).textTheme.bodyMedium!.copyWith(
+                        //             color: Colors.green.shade800,
+                        //           ),
+                        // ),
                       ],
                     )
                   : Icon(

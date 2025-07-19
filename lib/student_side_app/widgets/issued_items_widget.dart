@@ -42,6 +42,13 @@ class _IssuedItemsWidgetState extends State<IssuedItemsWidget> {
       decoration: BoxDecoration(
         color: Theme.of(context).colorScheme.primaryContainer,
         borderRadius: BorderRadius.circular(7),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withValues(alpha: 0.1),
+            blurRadius: 1.0,
+            offset: const Offset(0, 1),
+          ),
+        ],
       ),
       child: Column(
         children: [
@@ -169,11 +176,10 @@ class _IssuedItemsWidgetState extends State<IssuedItemsWidget> {
                                         CrossAxisAlignment.start,
                                     children: [
                                       Text(
-                                        'SPORT: ${details['sport']}'
-                                            .toUpperCase(),
+                                        'Sport: ${details['sport']}',
                                         style: Theme.of(context)
                                             .textTheme
-                                            .bodyLarge!
+                                            .bodyMedium!
                                             .copyWith(
                                               color: Theme.of(context)
                                                   .colorScheme
@@ -196,7 +202,7 @@ class _IssuedItemsWidgetState extends State<IssuedItemsWidget> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Wrap(
-                            spacing: 15,
+                            spacing: 10,
                             runSpacing: 10,
                             children: [
                               TimeContainer(

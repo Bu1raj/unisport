@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:sports_complex_ms/constants/error_handle.dart';
 import 'package:sports_complex_ms/constants/global_constants.dart';
+import 'package:sports_complex_ms/student_side_app/models/arena_booking/booking_details.dart';
 
 class ArenaServices {
   Future<List<String>> getSports() async {
@@ -96,8 +97,7 @@ class ArenaServices {
     return slotDetails;
   }
 
-  Future<void> bookASlot(
-      String slotNo, String arenaId, String usn, BuildContext context) async {
+  Future<void> bookASlot(String slotNo, String arenaId, String usn) async {
     try {
       http.Response res = await http.post(
         Uri.parse('$uri/arenaManagement/bookASlot'),
@@ -111,20 +111,19 @@ class ArenaServices {
       httpErrorHandle(
           response: res,
           onSuccess: () {
-            ScaffoldMessenger.of(context).showSnackBar(
-              SnackBar(
-                content: Text(
-                    'Slot-${slotNo.substring(slotNo.length - 1)} booked successfully'),
-              ),
-            );
+            // ScaffoldMessenger.of(context).showSnackBar(
+            //   SnackBar(
+            //     content: Text(
+            //         'Slot-${slotNo.substring(slotNo.length - 1)} booked successfully'),
+            //   ),
+            // );
           });
     } catch (e) {
       print(e.toString());
     }
   }
 
-  Future<Map<String, String?>?> getDetailsOfBookedSlots(String usn) async {
-    Map<String, String?>? bookedSlotDetails;
+  Future<BookingDetails?> getDetailsOfBookedSlots(String usn) async {
     try {
       http.Response res = await http.get(
         Uri.parse('$uri/arenaManagement/getBookedSlotDetails/$usn'),
@@ -133,33 +132,32 @@ class ArenaServices {
         },
       );
 
+      BookingDetails? bookedSlotDetails;
+
       httpErrorHandle(
         response: res,
         onSuccess: () {
           final temp = List.from(jsonDecode(res.body));
-          if(temp.isNotEmpty){
+          if (temp.isNotEmpty && temp.first is Map<String, dynamic>) {
             var slot = temp.first;
-          slot = {
-            'slotNo': slot['slotNo'].toString(),
-            'arenaId': slot['arenaId'].toString(),
-            'slotStartTime': slot['slotStartTime'].toString(),
-            'slotEndTime': slot['slotEndTime'].toString(),
-            'bookedBy': slot['bookedBy']?.toString(),
-          };
-
-          print(slot);
-          bookedSlotDetails = slot;
+            bookedSlotDetails = BookingDetails(
+              slotNo: slot['slotNo'].toString(),
+              arenaId: slot['arenaId'].toString(),
+              slotStartTime: slot['slotStartTime'].toString(),
+              slotEndTime: slot['slotEndTime'].toString(),
+              bookedBy: slot['bookedBy'].toString(),
+            );
           }
         },
       );
+      return bookedSlotDetails;
     } catch (e) {
       print(e.toString());
+      return null;
     }
-    return bookedSlotDetails;
   }
 
-  Future<void> cancelBooking(
-      String usn, BuildContext context) async {
+  Future<void> cancelBooking(String usn, BuildContext context) async {
     try {
       http.Response res = await http.post(
         Uri.parse('$uri/arenaManagement/cancelBooking'),
@@ -176,8 +174,8 @@ class ArenaServices {
         onSuccess: () {
           ScaffoldMessenger.of(context).showSnackBar(
             const SnackBar(
-              content: Text(
-                  'Booking cancelled successfully'),
+              content: Text('Booking cancelled successfully'),
+              duration: Duration(seconds: 1),
             ),
           );
         },

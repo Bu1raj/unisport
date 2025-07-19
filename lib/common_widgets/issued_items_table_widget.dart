@@ -10,7 +10,8 @@ class IssuedItemsTableWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     final entries = equipmentsMap.entries.toList();
 
-    Widget buildCell(String text, {bool isHeader = false, bool isLast = false}) {
+    Widget buildCell(String text,
+        {bool isHeader = false, bool isLast = false}) {
       return Container(
         padding: const EdgeInsets.all(8),
         decoration: BoxDecoration(
