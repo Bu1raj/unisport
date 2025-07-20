@@ -76,6 +76,7 @@ class _ArenaBookingWidgetState extends ConsumerState<ArenaBookingWidget> {
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(7),
                     ),
+                    foregroundColor: Theme.of(context).colorScheme.primary,
                     padding:
                         const EdgeInsets.symmetric(horizontal: 4, vertical: 4),
                   ),
@@ -91,7 +92,7 @@ class _ArenaBookingWidgetState extends ConsumerState<ArenaBookingWidget> {
                   ),
                   label: Text("Book Arena"),
                 ),
-                const SizedBox(width: 10),
+                const SizedBox(width: 10)
               ],
             ),
             if (_toggle)
@@ -127,8 +128,7 @@ class _ArenaBookingWidgetState extends ConsumerState<ArenaBookingWidget> {
                           borderRadius: BorderRadius.circular(7),
                           boxShadow: [
                             BoxShadow(
-                              color: Colors.black
-                                  .withValues(alpha: 0.1),
+                              color: Colors.black.withValues(alpha: 0.1),
                               blurRadius: 1.0,
                               offset: const Offset(0, 1),
                             ),
@@ -145,6 +145,7 @@ class _ArenaBookingWidgetState extends ConsumerState<ArenaBookingWidget> {
                     ),
                 ],
               ),
+            _toggle ? const SizedBox(height: 17) : const SizedBox.shrink(),
           ],
         );
       }
@@ -155,7 +156,7 @@ class _ArenaBookingWidgetState extends ConsumerState<ArenaBookingWidget> {
         Text(
           'Booking Details',
           style: Theme.of(context).textTheme.titleLarge!.copyWith(
-                color: Theme.of(context).colorScheme.tertiary,
+                color: Theme.of(context).colorScheme.primary,
               ),
         ),
         const Divider(
@@ -165,6 +166,7 @@ class _ArenaBookingWidgetState extends ConsumerState<ArenaBookingWidget> {
           thickness: 0.5,
         ),
         content,
+        bookingDetails != null ? const SizedBox(height: 17) : const SizedBox(),
       ],
     );
   }

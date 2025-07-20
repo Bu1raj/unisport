@@ -67,13 +67,12 @@ class _StudentMainScreenState extends ConsumerState<StudentMainScreen> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         IssuedItemsWidget(studentDetails: studentDetails),
-                        const SizedBox(height: 20),
+                        const SizedBox(height: 17),
                         ArenaBookingWidget(
                           studentUsn: studentDetails.usn,
                         ),
-                        const SizedBox(height: 20),
                         const AvailableTournamentsList(),
-                        const SizedBox(height: 20),
+                        const SizedBox(height: 10),
                       ],
                     ),
                   ),

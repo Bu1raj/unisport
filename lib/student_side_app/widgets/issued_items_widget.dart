@@ -56,7 +56,7 @@ class _IssuedItemsWidgetState extends State<IssuedItemsWidget> {
             Row(
               children: [
                 const Icon(
-                  Icons.warning,
+                  Icons.warning_rounded,
                   color: Colors.red,
                 ),
                 const SizedBox(width: 10),
@@ -175,18 +175,28 @@ class _IssuedItemsWidgetState extends State<IssuedItemsWidget> {
                                     crossAxisAlignment:
                                         CrossAxisAlignment.start,
                                     children: [
-                                      Text(
-                                        'Sport: ${details['sport']}',
-                                        style: Theme.of(context)
-                                            .textTheme
-                                            .bodyMedium!
-                                            .copyWith(
-                                              color: Theme.of(context)
-                                                  .colorScheme
-                                                  .primary,
-                                            ),
+                                      Text.rich(
+                                        TextSpan(
+                                          text: 'Sport: ',
+                                          style: Theme.of(context)
+                                              .textTheme
+                                              .bodyMedium!
+                                              .copyWith(
+                                                color: Theme.of(context)
+                                                    .colorScheme
+                                                    .tertiary,
+                                              ),
+                                          children: [
+                                            TextSpan(
+                                                text: details['sport']
+                                                    .toUpperCase(),
+                                                style: Theme.of(context)
+                                                    .textTheme
+                                                    .bodyMedium!),
+                                          ],
+                                        ),
                                       ),
-                                      const SizedBox(height: 5),
+                                      const SizedBox(height: 7),
                                       IssuedItemsTableWidget(
                                           equipmentsMap: eqpNamesIdsMap),
                                     ],
@@ -221,8 +231,14 @@ class _IssuedItemsWidgetState extends State<IssuedItemsWidget> {
                 } else {
                   return const Center(
                     child: Padding(
-                      padding: EdgeInsets.all(50.0),
-                      child: Text('You have not taken any equipments'),
+                      padding: EdgeInsets.only(top: 10),
+                      child: Text(
+                        'You have not taken any equipments',
+                        style: TextStyle(
+                          color: Colors.grey,
+                          fontStyle: FontStyle.italic,
+                        ),
+                      ),
                     ),
                   );
                 }

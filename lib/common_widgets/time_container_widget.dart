@@ -32,6 +32,7 @@ class TimeContainer extends StatelessWidget {
         children: [
           Text(text,
               style: TextStyle(
+                color: Theme.of(context).colorScheme.tertiary,
                 fontWeight: FontWeight.bold,
               )),
           const SizedBox(height: 5),
