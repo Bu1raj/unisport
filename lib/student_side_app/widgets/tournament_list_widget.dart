@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:sports_complex_ms/staff_side_app/providers/tournament_provider.dart';
-import 'package:sports_complex_ms/student_side_app/widgets/tournamentStudentCard.dart';
+import 'package:sports_complex_ms/student_side_app/widgets/tournament_student_card.dart';
 
 class AvailableTournamentsList extends ConsumerStatefulWidget {
   const AvailableTournamentsList({super.key});
@@ -27,52 +27,48 @@ class _AvailableTournamentsListState
 
     if (list != null && list.isEmpty) {
       content = const Center(
-        child: Text('No tournaments available'),
+        child: Text(
+          'No tournaments available',
+          style: TextStyle(
+            color: Colors.grey,
+            fontStyle: FontStyle.italic,
+          ),
+        ),
       );
     }
 
     if (list != null && list.isNotEmpty) {
-      content = Expanded(
-        child: ListView.builder(
-          itemCount: list.length,
-          itemBuilder: (context, index) {
-            return TournamentStudentCard(
+      content = ListView.builder(
+        shrinkWrap: true,
+        physics: const NeverScrollableScrollPhysics(),
+        itemCount: list.length,
+        itemBuilder: (context, index) {
+          return Padding(
+            padding: const EdgeInsets.only(bottom: 10),
+            child: TournamentStudentCard(
               tournament: list[index],
-            );
-          },
-        ),
+            ),
+          );
+        },
       );
     }
-    return Container(
-      width: screenWdith * 0.96,
-      height: screenHeight * 0.50,
-      padding: const EdgeInsets.all(8),
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(20),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.grey.withOpacity(0.5),
-            blurRadius: 3,
-            //offset: const Offset(0.4, 0.4),
-          ),
-        ],
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Text(
-            'Available tournaments',
-            style: Theme.of(context).textTheme.titleLarge!.copyWith(
-                  color: Theme.of(context).colorScheme.tertiary,
-                ),
-          ),
-          const SizedBox(
-            height: 5,
-          ),
-          content,
-        ],
-      ),
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(
+          'Available tournaments',
+          style: Theme.of(context).textTheme.titleLarge!.copyWith(
+                color: Theme.of(context).colorScheme.primary,
+              ),
+        ),
+        const Divider(
+          color: Colors.black38,
+          height: 20,
+          endIndent: 7,
+          thickness: 0.5,
+        ),
+        content,
+      ],
     );
   }
 }

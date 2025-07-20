@@ -22,47 +22,46 @@ class _TournamentStudentDetailsScreenState
   Widget build(BuildContext context) {
     return LayoutBuilder(
       builder: (context, constraints) {
-        return ConstrainedBox(
-          constraints: BoxConstraints(
-            maxHeight: constraints.maxHeight,
-            maxWidth: constraints.maxWidth,
-          ),
-          child: Padding(
-            padding: const EdgeInsets.fromLTRB(20, 40, 20, 20),
-            child: Column(
-              children: [
-                TournamentDetailsWidget(tournament: widget.tournament),
-                const SizedBox(
-                  height: 20,
-                ),
-                Row(
-                  children: [
-                    const Icon(
-                      Icons.info,
-                      size: 15,
-                    ),
-                    Text(
+        return Padding(
+          padding: const EdgeInsets.fromLTRB(20, 40, 20, 10),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              TournamentDetailsWidget(tournament: widget.tournament),
+              const SizedBox(
+                height: 15,
+              ),
+              Row(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  const Icon(
+                    Icons.info,
+                    size: 20,
+                  ),
+                  const SizedBox(
+                    width: 5,
+                  ),
+                  Expanded(
+                    child: Text(
                       'Please contact the sports department for registering',
+                      maxLines: 2,
                       style: Theme.of(context).textTheme.bodySmall,
                     ),
-                  ],
-                ),
-                const SizedBox(
-                  height: 10,
-                ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.end,
-                  children: [
-                    ElevatedButton(
-                      onPressed: () {
-                        Navigator.of(context).pop();
-                      },
-                      child: const Text('Okay'),
-                    ),
-                  ],
-                )
-              ],
-            ),
+                  ),
+                ],
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.end,
+                children: [
+                  ElevatedButton(
+                    onPressed: () {
+                      Navigator.of(context).pop();
+                    },
+                    child: const Text('Okay'),
+                  ),
+                ],
+              )
+            ],
           ),
         );
       },
